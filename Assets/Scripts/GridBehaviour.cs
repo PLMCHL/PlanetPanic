@@ -13,12 +13,11 @@ public class GridBehaviour : MonoBehaviour
 
     public Tilemap tileMap;
 
-    private BoardTileMap boardTileMap;
+    private BoardTileMap boardTileMap = new BoardTileMap(new Vector3Int(0, 0, 0));
 
     // Start is called before the first frame update
     void Start()
     {
-        boardTileMap = new BoardTileMap(new Vector3Int(0, 0, 0));
         SetTilesPath();
     }
 
@@ -27,11 +26,15 @@ public class GridBehaviour : MonoBehaviour
         setTile(boardTileMap.launch.Location, sand);
 
         recursiveFill(new List<TileNode>{ boardTileMap.start });
-
     }
 
     void recursiveFill(List<TileNode> tiles)
     {
+        if (tiles == null)
+        {
+            return;
+        }
+            
         foreach(TileNode tile in tiles)
         {
             setTile(tile.Location, grass);
