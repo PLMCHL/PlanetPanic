@@ -4,7 +4,8 @@ using UnityEngine.Tilemaps;
 
 public class GridMap : MonoBehaviour
 {
-    private List<int> tileDirectionList = new List<int> { 1, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 2, 3, 3, 4, 4, 5, 5, 5 };
+    //private List<int> tileDirectionList = new List<int> { 1, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 2, 3, 3, 4, 4, 5, 5, 5 };
+    private List<int> tileDirectionList = new List<int> { 0, 5, 5, 0, 1, 0, 5, 5, 0, 1, 0, 1, 1, 2, 3, 3, 2, 1, 2, 2, 3, 3, 4, 5, 4, 3, 4, 4 };
 
     private List<Vector3Int> DIRECTIONS = new List<Vector3Int>
     {
