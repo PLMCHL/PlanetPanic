@@ -9,6 +9,11 @@ public class HexDirectionalTile : Tile
 
     public override bool StartUp(Vector3Int location, ITilemap tilemap, GameObject go)
     {
+        if (directions == null)
+        {
+            return false;
+        }
+
         SpriteManagerBehaviour spriteManager = (SpriteManagerBehaviour)FindObjectOfType(typeof(SpriteManagerBehaviour));
 
         List<Sprite> directionSprites = new List<Sprite>();

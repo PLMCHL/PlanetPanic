@@ -12,6 +12,11 @@ public class SpriteManagerBehaviour : MonoBehaviour
 
     public Sprite getDirectionCombo(params Sprite[] sprites)
     {
+        if (sprites.Length < 1)
+        {
+            return null;
+        }
+
         // Always assume the sprites are the same size
         Texture2D texture = new Texture2D(sprites[0].texture.width, sprites[0].texture.height);
         texture.filterMode = FilterMode.Point;
