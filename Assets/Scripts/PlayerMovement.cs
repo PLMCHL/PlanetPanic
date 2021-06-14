@@ -33,8 +33,9 @@ public class PlayerMovement : MonoBehaviour
 
             Debug.Log("DIRECTION: " + tile.directions);
 
-            // TODO fix
-            var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[tile.directions[0]];
+            var direction = tile.directions[Random.Range(0, tile.directions.Count)];
+
+            var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
 
             Debug.Log("NEW GRID POSITION: " + newPos);
 
