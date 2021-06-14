@@ -11,32 +11,36 @@ public class HexDirectionalTile : Tile
     {
         SpriteManagerBehaviour spriteManager = (SpriteManagerBehaviour)FindObjectOfType(typeof(SpriteManagerBehaviour));
 
+        List<Sprite> directionSprites = new List<Sprite>();
+
         // TODO combine directions instead
         foreach (int direction in directions)
         {
             switch (direction)
             {
                 case 0:
-                    this.sprite = spriteManager.UpRightSprite;
+                    directionSprites.Add(spriteManager.UpRightSprite);
                     break;
                 case 1:
-                    this.sprite = spriteManager.RightSprite;
+                    directionSprites.Add(spriteManager.RightSprite);
                     break;
                 case 2:
-                    this.sprite = spriteManager.DownRightSprite;
+                    directionSprites.Add(spriteManager.DownRightSprite);
                     break;
                 case 3:
-                    this.sprite = spriteManager.DownLeftSprite;
+                    directionSprites.Add(spriteManager.DownLeftSprite);
                     break;
                 case 4:
-                    this.sprite = spriteManager.LeftSprite;
+                    directionSprites.Add(spriteManager.LeftSprite);
                     break;
                 case 5:
-                    this.sprite = spriteManager.UpLeftSprite;
+                    directionSprites.Add(spriteManager.UpLeftSprite);
                     break;
             }
         }
-        
+
+        this.sprite = spriteManager.getDirectionCombo(directionSprites.ToArray());
+
         return true;
     }
 
