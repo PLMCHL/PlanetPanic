@@ -13,7 +13,6 @@ public class HexDirectionalTile : Tile
 
         List<Sprite> directionSprites = new List<Sprite>();
 
-        // TODO combine directions instead
         foreach (int direction in directions)
         {
             switch (direction)

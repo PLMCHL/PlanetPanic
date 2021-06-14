@@ -10,26 +10,10 @@ public class SpriteManagerBehaviour : MonoBehaviour
     public Sprite LeftSprite;
     public Sprite UpLeftSprite;
 
-    public Sprite getDirectionCombo(params Sprite[] values)
+    public Sprite getDirectionCombo(params Sprite[] sprites)
     {
-        // TODO reuse sprites
-
-        if (values.Length == 1)
-        {
-            return values[0];
-        }
-
-        return mergeSprites(values[0], values[1]);
-    }
-
-    private Sprite mergeSprites(Sprite s1, Sprite s2)
-    {
-        // TODO extend to accept array
-
-        var t1 = s1.texture;
-        var t2 = s2.texture;
-
-        Texture2D texture = new Texture2D(t1.width, t1.height);
+        // Always assume the sprites are the same size
+        Texture2D texture = new Texture2D(sprites[0].texture.width, sprites[0].texture.height);
         texture.filterMode = FilterMode.Point;
         texture.wrapMode = TextureWrapMode.Clamp;
 
@@ -39,16 +23,16 @@ public class SpriteManagerBehaviour : MonoBehaviour
             {
                 var newColor = new Color32(0, 0, 0, 0);
 
-                var p1 = s1.texture.GetPixel(x, y);
-                if (p1.a != 0)
+                foreach (Sprite sprite in sprites)
                 {
-                    newColor = p1;
-                }
+                    var pixel = sprite.texture.GetPixel(x, y);
 
-                var p2 = s2.texture.GetPixel(x, y);
-                if (p2.a != 0)
-                {
-                    newColor = p2;
+                    // Don't replace if the pixel is transparent
+                    // If any sprites collide, the last one always wins
+                    if (pixel.a != 0)
+                    {
+                        newColor = pixel;
+                    }
                 }
 
                 texture.SetPixel(x, y, newColor);
