@@ -29,35 +29,17 @@ public class PlayerMovement : MonoBehaviour
             var gridPosition = map.WorldToCell(player.transform.position);
 
             Debug.Log("GRID POSITION: " + gridPosition);
-            DirectionalTile tile = (DirectionalTile)map.GetTile(gridPosition);
+            HexDirectionalTile tile = (HexDirectionalTile)map.GetTile(gridPosition);
 
-            Debug.Log("DIRECTION: " + tile.direction);
+            Debug.Log("DIRECTION: " + tile.directions);
 
-            var newPos = UnityCellToCube(gridPosition) + DIRECTIONS[tile.direction];
+            // TODO fix
+            var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[tile.directions[0]];
 
             Debug.Log("NEW GRID POSITION: " + newPos);
 
-            this.player.transform.position = map.CellToWorld(CubeToUnityCell(newPos));
+            this.player.transform.position = map.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
         }
     }
 
-    private Vector3Int UnityCellToCube(Vector3Int cell)
-    {
-        var yCell = cell.x;
-        var xCell = cell.y;
-        var x = yCell - (xCell - (xCell & 1)) / 2;
-        var z = xCell;
-        var y = -x - z;
-        return new Vector3Int(x, y, z);
-    }
-
-    private Vector3Int CubeToUnityCell(Vector3Int cube)
-    {
-        var x = cube.x;
-        var z = cube.z;
-        var col = x + (z - (z & 1)) / 2;
-        var row = z;
-
-        return new Vector3Int(col, row, 0);
-    }
 }
