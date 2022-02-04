@@ -21,15 +21,16 @@ public class GameSessionManager : MonoBehaviour
 
     public Tilemap directionMap;
     public Tilemap orbMap;
-    public Image currentPlayerImage;
 
     private PlayerManager playerManager;
+    private GameInterfaceManager gameInterfaceManager;
 
     void Start()
     {
         UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
 
         InitializePlayers();
+        InitializeGameInterface();
     }
 
     void Update()
@@ -63,19 +64,19 @@ public class GameSessionManager : MonoBehaviour
             playerManager.endPlayerTurn();
         }
 
-        UpdateUI();
+        gameInterfaceManager.UpdateInterface();
     }
 
     private void InitializePlayers()
     {
         playerManager = PlayerManager.Instance;
-        playerManager.initialize(PLAYER_COUNT, START_POSITION);
-        playerManager.setCurrentPlayerIndex(0);
+        playerManager.Initialize(PLAYER_COUNT, START_POSITION);
+        playerManager.SetCurrentPlayerIndex(0);
     }
 
-    private void UpdateUI()
+    private void InitializeGameInterface()
     {
-        // Update current player sprite
-        currentPlayerImage.sprite = playerManager.getCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
+        gameInterfaceManager = GameInterfaceManager.Instance;
+        gameInterfaceManager.Initialize();
     }
 }

@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void initialize(int playerCount, Vector3Int startPosition)
+    public void Initialize(int playerCount, Vector3Int startPosition)
     {
         players = new GameObject[playerCount];
 
@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void setCurrentPlayerIndex(int index)
+    public void SetCurrentPlayerIndex(int index)
     {
         currentPlayerIndex = index;
     }
