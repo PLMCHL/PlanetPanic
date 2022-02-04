@@ -41,7 +41,7 @@ public class GameSessionManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Get current position and move player
-            var currentPlayer = playerManager.getCurrentPlayer();
+            var currentPlayer = playerManager.GetCurrentPlayer();
 
             var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
 
@@ -61,7 +61,7 @@ public class GameSessionManager : MonoBehaviour
             Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
 
             // Switch User
-            playerManager.endPlayerTurn();
+            playerManager.EndPlayerTurn();
         }
 
         gameInterfaceManager.UpdateInterface();

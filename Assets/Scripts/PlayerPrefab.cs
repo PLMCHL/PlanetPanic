@@ -8,7 +8,7 @@ public class PlayerPrefab : MonoBehaviour
 
     private static bool initialized;
 
-    void Start()
+    void Awake()
     {
         if (!initialized)
         {
@@ -16,6 +16,7 @@ public class PlayerPrefab : MonoBehaviour
             initialized = true;
         }
 
+        // Set player sprite
         var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprites[LastUsedIndex++];
     }

@@ -38,13 +38,18 @@ public class PlayerManager : MonoBehaviour
     {
         currentPlayerIndex = index;
     }
-    public void endPlayerTurn()
+    public void EndPlayerTurn()
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
     }
 
-    public GameObject getCurrentPlayer()
+    public GameObject GetCurrentPlayer()
     {
         return players[currentPlayerIndex];
+    }
+
+    public GameObject[] GetAllPlayers()
+    {
+        return players;
     }
 }
