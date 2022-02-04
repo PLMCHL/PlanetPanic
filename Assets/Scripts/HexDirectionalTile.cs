@@ -7,11 +7,16 @@ public class HexDirectionalTile : Tile
 {
     public List<int> directions;
 
-    public override bool StartUp(Vector3Int location, ITilemap tilemap, GameObject go)
+    public override void GetTileData(Vector3Int location, ITilemap tilemap, ref TileData tileData)
+    {
+        tileData.sprite = GetSpriteCombo();
+    }
+
+    private Sprite GetSpriteCombo()
     {
         if (directions == null)
         {
-            return false;
+            return null;
         }
 
         SpriteManagerBehaviour spriteManager = (SpriteManagerBehaviour)FindObjectOfType(typeof(SpriteManagerBehaviour));
@@ -43,12 +48,11 @@ public class HexDirectionalTile : Tile
             }
         }
 
-        this.sprite = spriteManager.getDirectionCombo(directionSprites.ToArray());
-
-        return true;
+        return spriteManager.getDirectionCombo(directionSprites.ToArray());
     }
 
-    [CreateTileFromPalette]
+
+        [CreateTileFromPalette]
     public static TileBase CreateDirectionalTile(Sprite sprite)
     {
         var tClass = ScriptableObject.CreateInstance<HexDirectionalTile>();
