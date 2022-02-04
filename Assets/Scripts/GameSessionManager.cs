@@ -1,9 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerMovement : MonoBehaviour
+public class GameSessionManager : MonoBehaviour
 {
+    private const int PLAYER_COUNT = 2;
+    private Vector3Int START_POSITION = new Vector3Int(0, 0, 0);
+
     private List<Vector3Int> DIRECTIONS = new List<Vector3Int>
     {
         new Vector3Int(0, -1, 1),
@@ -16,21 +20,27 @@ public class PlayerMovement : MonoBehaviour
 
     public Tilemap directionMap;
     public Tilemap orbMap;
-    private GameObject player;
+
+    private PlayerManager playerManager;
 
     void Start()
     {
-        this.player = GameObject.FindWithTag("Player");
+        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+
+        InitializePlayers();
     }
 
     void Update()
     {
-        // TODO Selection of the direction
+        // TODO: Select direction with arrows
 
         // When pressed use selection and advance
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            var gridPosition = directionMap.WorldToCell(player.transform.position);
+            // Get current position and move player
+            var currentPlayer = playerManager.getCurrentPlayer();
+
+            var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
 
             Debug.Log("GRID POSITION: " + gridPosition);
             HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
@@ -41,12 +51,26 @@ public class PlayerMovement : MonoBehaviour
 
             Debug.Log("NEW GRID POSITION: " + newPos);
 
-            this.player.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
+            currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
-            // TODO grant player an orb when falling on space
+            // TODO: grant player an orb when falling on space
             HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(CubeCoordUtils.CubeToUnityCell(newPos));
             Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
+
+            // Switch User
+            playerManager.endPlayerTurn();
         }
     }
 
+    IEnumerator waiter()
+    {
+        yield return new WaitForSeconds(5);
+    }
+
+    private void InitializePlayers()
+    {
+        playerManager = PlayerManager.Instance;
+        playerManager.initialize(PLAYER_COUNT, START_POSITION);
+        playerManager.setCurrentPlayerIndex(0);
+    }
 }
