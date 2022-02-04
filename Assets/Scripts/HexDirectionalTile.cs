@@ -56,6 +56,4 @@ public class HexDirectionalTile : Tile
         tClass.name = sprite.name;
         return tClass;
     }
-
-
 }
