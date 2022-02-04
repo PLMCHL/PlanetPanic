@@ -25,48 +25,79 @@ public class GameSessionManager : MonoBehaviour
     private PlayerManager playerManager;
     private GameInterfaceManager gameInterfaceManager;
 
+    public State state { get; private set; }
+    public enum State
+    {
+        Rolling,
+        Wait
+    }
+
     void Start()
     {
         UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
 
         InitializePlayers();
         InitializeGameInterface();
+
+        DiceRoller.Instance.StartRoll();
+        state = State.Rolling;
     }
 
     void Update()
     {
         // TODO: Select direction with arrows
-
-        // When pressed use selection and advance
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (state == State.Rolling)
         {
-            // Get current position and move player
-            var currentPlayer = playerManager.GetCurrentPlayer();
+            // When pressed use selection and advance
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                var diceValue = DiceRoller.Instance.GetValue();
 
+                var newPos = MoveCurrentPlayer(diceValue);
+
+                // Grant player an orb when falling on space
+                HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(CubeCoordUtils.CubeToUnityCell(newPos));
+                Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
+
+                playerManager.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
+
+                state = State.Wait;
+            }
+        } 
+        else if (state == State.Wait)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // Switch User
+                playerManager.EndPlayerTurn();
+
+                DiceRoller.Instance.StartRoll();
+                state = State.Rolling;
+            }
+        }
+
+        gameInterfaceManager.UpdateInterface();
+    }
+
+    private Vector3Int MoveCurrentPlayer(int spaces)
+    {
+        Vector3Int newPos = new Vector3Int(0, 0, 0);
+        var currentPlayer = playerManager.GetCurrentPlayer();
+
+        for (int i = 0; i < spaces; i++)
+        {
             var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
 
-            Debug.Log("GRID POSITION: " + gridPosition);
             HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
 
             var direction = directionTile.directions[Random.Range(0, directionTile.directions.Count)];
 
-            var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
-
-            Debug.Log("NEW GRID POSITION: " + newPos);
+            newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
 
             currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
-
-            // Grant player an orb when falling on space
-            HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(CubeCoordUtils.CubeToUnityCell(newPos));
-            Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
-
-            playerManager.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
-
-            // Switch User
-            playerManager.EndPlayerTurn();
         }
 
-        gameInterfaceManager.UpdateInterface();
+        return newPos;
     }
 
     private void InitializePlayers()
@@ -81,4 +112,5 @@ public class GameSessionManager : MonoBehaviour
         gameInterfaceManager = GameInterfaceManager.Instance;
         gameInterfaceManager.Initialize();
     }
+
 }
