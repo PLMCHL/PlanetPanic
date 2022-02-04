@@ -56,9 +56,11 @@ public class GameSessionManager : MonoBehaviour
 
             currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
-            // TODO: grant player an orb when falling on space
+            // Grant player an orb when falling on space
             HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(CubeCoordUtils.CubeToUnityCell(newPos));
             Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
+
+            playerManager.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
 
             // Switch User
             playerManager.EndPlayerTurn();

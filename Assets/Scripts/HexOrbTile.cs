@@ -2,10 +2,8 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class HexOrbTile : Tile
+public partial class HexOrbTile : Tile
 {
-    public enum OrbTypes { Ice, Mud, Forest, Poison, Sand };
-
     public OrbTypes orbType;
 
     [CreateTileFromPalette]
