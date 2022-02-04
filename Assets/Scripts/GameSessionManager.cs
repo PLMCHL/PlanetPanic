@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class GameSessionManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class GameSessionManager : MonoBehaviour
 
     public Tilemap directionMap;
     public Tilemap orbMap;
+    public Image currentPlayerImage;
 
     private PlayerManager playerManager;
 
@@ -60,11 +62,8 @@ public class GameSessionManager : MonoBehaviour
             // Switch User
             playerManager.endPlayerTurn();
         }
-    }
 
-    IEnumerator waiter()
-    {
-        yield return new WaitForSeconds(5);
+        UpdateUI();
     }
 
     private void InitializePlayers()
@@ -72,5 +71,11 @@ public class GameSessionManager : MonoBehaviour
         playerManager = PlayerManager.Instance;
         playerManager.initialize(PLAYER_COUNT, START_POSITION);
         playerManager.setCurrentPlayerIndex(0);
+    }
+
+    private void UpdateUI()
+    {
+        // Update current player sprite
+        currentPlayerImage.sprite = playerManager.getCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
     }
 }
