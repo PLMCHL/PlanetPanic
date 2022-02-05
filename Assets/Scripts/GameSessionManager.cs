@@ -1,15 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 
 public class GameSessionManager : MonoBehaviour
 {
     private const int PLAYER_COUNT = 2;
     private Vector3Int START_POSITION = new Vector3Int(0, 0, 0);
 
-    private List<Vector3Int> DIRECTIONS = new List<Vector3Int>
+    public static List<Vector3Int> DIRECTIONS = new List<Vector3Int>
     {
         new Vector3Int(0, -1, 1),
         new Vector3Int(1, -1, 0),
@@ -23,7 +21,6 @@ public class GameSessionManager : MonoBehaviour
     public Tilemap orbMap;
 
     private int movementsLeft = 0;
-    private int? directionSelected = null;
 
     private PlayerManager playerManager;
     private GameInterfaceManager gameInterfaceManager;
@@ -53,20 +50,6 @@ public class GameSessionManager : MonoBehaviour
         // TODO: Select direction with arrows
         if (state == State.DirectionSelect)
         {
-            var currentPlayer = playerManager.GetCurrentPlayer();
-
-            var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
-            HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
-
-            var selectedDirection = directionTile.directions[directionSelected.Value];
-
-            var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + 2 * DIRECTIONS[selectedDirection];
-
-            var directionTarget = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
-
-            // Display selector
-            DirectionSelectorManager.Instance.ShowSelector(currentPlayer.transform.position, directionTarget);
-
             // Select direction
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -77,13 +60,16 @@ public class GameSessionManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                directionSelected = (directionSelected + 1 ) % directionTile.directions.Count;
+                DirectionSelectorManager.Instance.IncrementSelection(1);
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                directionSelected = ((directionSelected - 1) + directionTile.directions.Count) % directionTile.directions.Count;
+                DirectionSelectorManager.Instance.IncrementSelection(1);
             }
+
+            var currentPlayer = playerManager.GetCurrentPlayer();
+            DirectionSelectorManager.Instance.UpdateSelector(directionMap, currentPlayer);
         }
         else if (state == State.Moving)
         {
@@ -141,26 +127,23 @@ public class GameSessionManager : MonoBehaviour
         int direction;
         if (directionTile.directions.Count > 1) {
 
-            if (!directionSelected.HasValue)
+            if (!DirectionSelectorManager.Instance.Active())
             {
+                DirectionSelectorManager.Instance.StartSelection(directionMap, currentPlayer);
                 state = State.DirectionSelect;
-                directionSelected = 0;
                 return false;
             }
 
-            DirectionSelectorManager.Instance.HideSelector();
-
-            direction = directionTile.directions[directionSelected.Value];
-            directionSelected = null;
+            direction = DirectionSelectorManager.Instance.CompleteSelection();
         }
         else
         {
             direction = directionTile.directions[0];
         }
 
-        //var direction = directionTile.directions[Random.Range(0, directionTile.directions.Count)];
-
         var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
+
+        // TODO add short wait, to make it easier to follow
 
         currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
