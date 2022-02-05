@@ -28,8 +28,6 @@ public class GameSessionManager : MonoBehaviour
     private PlayerManager playerManager;
     private GameInterfaceManager gameInterfaceManager;
 
-    private LineRenderer lineRenderer;
-
     public State state { get; private set; }
     public enum State
     {
@@ -48,15 +46,6 @@ public class GameSessionManager : MonoBehaviour
 
         DiceRoller.Instance.StartRoll();
         state = State.Rolling;
-
-        // Create line
-        lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
-        lineRenderer.startColor = Color.black;
-        lineRenderer.endColor = Color.black;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
-        lineRenderer.positionCount = 2;
-        lineRenderer.useWorldSpace = true;
     }
 
     void Update()
@@ -69,20 +58,14 @@ public class GameSessionManager : MonoBehaviour
             var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
             HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
 
-            // TODO ask for selection from these
             var selectedDirection = directionTile.directions[directionSelected.Value];
 
             var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + 2 * DIRECTIONS[selectedDirection];
 
             var directionTarget = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
-            // Display directional line
-            lineRenderer.enabled = true;
-
-            // TODO clean up
-            var translation = new Vector3(0, 0, -2);
-            lineRenderer.SetPosition(0, currentPlayer.transform.position + translation);
-            lineRenderer.SetPosition(1, directionTarget + translation);
+            // Display selector
+            DirectionSelectorManager.Instance.ShowSelector(currentPlayer.transform.position, directionTarget);
 
             // Select direction
             if (Input.GetKeyDown(KeyCode.Space))
@@ -165,7 +148,7 @@ public class GameSessionManager : MonoBehaviour
                 return false;
             }
 
-            lineRenderer.enabled = false;
+            DirectionSelectorManager.Instance.HideSelector();
 
             direction = directionTile.directions[directionSelected.Value];
             directionSelected = null;
