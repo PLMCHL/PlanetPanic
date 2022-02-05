@@ -21,16 +21,21 @@ public class GameSessionManager : MonoBehaviour
 
     public Tilemap directionMap;
     public Tilemap orbMap;
-    public int movementsLeft = 0;
+
+    private int movementsLeft = 0;
+    private int? directionSelected = null;
 
     private PlayerManager playerManager;
     private GameInterfaceManager gameInterfaceManager;
+
+    private LineRenderer lineRenderer;
 
     public State state { get; private set; }
     public enum State
     {
         Rolling,
         Moving,
+        DirectionSelect,
         Waiting
     }
 
@@ -43,20 +48,70 @@ public class GameSessionManager : MonoBehaviour
 
         DiceRoller.Instance.StartRoll();
         state = State.Rolling;
+
+        // Create line
+        lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
+        lineRenderer.startColor = Color.black;
+        lineRenderer.endColor = Color.black;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.positionCount = 2;
+        lineRenderer.useWorldSpace = true;
     }
 
     void Update()
     {
         // TODO: Select direction with arrows
-        if (state == State.Moving)
+        if (state == State.DirectionSelect)
         {
-            var newPos = MoveCurrentPlayer();
+            var currentPlayer = playerManager.GetCurrentPlayer();
+
+            var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
+            HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
+
+            // TODO ask for selection from these
+            var selectedDirection = directionTile.directions[directionSelected.Value];
+
+            var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + 2 * DIRECTIONS[selectedDirection];
+
+            var directionTarget = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
+
+            // Display directional line
+            lineRenderer.enabled = true;
+
+            // TODO clean up
+            var translation = new Vector3(0, 0, -2);
+            lineRenderer.SetPosition(0, currentPlayer.transform.position + translation);
+            lineRenderer.SetPosition(1, directionTarget + translation);
+
+            // Select direction
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // TODO hide selection arrow
+
+                state = State.Moving;
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                directionSelected = (directionSelected + 1 ) % directionTile.directions.Count;
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                directionSelected = ((directionSelected - 1) + directionTile.directions.Count) % directionTile.directions.Count;
+            }
+        }
+        else if (state == State.Moving)
+        {
+            var completed = MoveCurrentPlayer();
 
             // If there are no movements left, stop the player and wait to end turn
             if (movementsLeft == 0)
             {
                 // Grant player an orb when falling on space
-                HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(CubeCoordUtils.CubeToUnityCell(newPos));
+                var newPos = directionMap.WorldToCell(playerManager.GetCurrentPlayer().transform.position);
+                HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(newPos);
                 Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
 
                 playerManager.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
@@ -91,25 +146,44 @@ public class GameSessionManager : MonoBehaviour
         gameInterfaceManager.UpdateInterface();
     }
 
-    private Vector3Int MoveCurrentPlayer()
+    private bool MoveCurrentPlayer()
     {
-        Vector3Int newPos = new Vector3Int(0, 0, 0);
         var currentPlayer = playerManager.GetCurrentPlayer();
 
         var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
 
         HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
 
-        // TODO select direction
-        var direction = directionTile.directions[Random.Range(0, directionTile.directions.Count)];
+        // Ask for selection if there is more than 1 direction
+        int direction;
+        if (directionTile.directions.Count > 1) {
 
-        newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
+            if (!directionSelected.HasValue)
+            {
+                state = State.DirectionSelect;
+                directionSelected = 0;
+                return false;
+            }
+
+            lineRenderer.enabled = false;
+
+            direction = directionTile.directions[directionSelected.Value];
+            directionSelected = null;
+        }
+        else
+        {
+            direction = directionTile.directions[0];
+        }
+
+        //var direction = directionTile.directions[Random.Range(0, directionTile.directions.Count)];
+
+        var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
 
         currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
         movementsLeft--;
 
-        return newPos;
+        return true;
     }
 
     private void InitializePlayers()

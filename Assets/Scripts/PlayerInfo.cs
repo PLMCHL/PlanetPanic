@@ -20,6 +20,7 @@ public class PlayerInfo : MonoBehaviour
         // Set player sprite
         var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprites[LastUsedIndex++];
+        LastUsedIndex = LastUsedIndex % sprites.Count;
 
         // Set player scores
         orbScores = new Dictionary<OrbTypes, int> {
