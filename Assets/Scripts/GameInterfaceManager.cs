@@ -1,3 +1,5 @@
+using Assets.Scripts.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +8,7 @@ using UnityEngine.UI;
 public class GameInterfaceManager : MonoBehaviour
 {
     public Image currentPlayerImage;
+    public Sprite alienUnknownImage;
     public GameObject PlayerPanelPrefab;
 
     private static GameInterfaceManager instance;
@@ -28,23 +31,68 @@ public class GameInterfaceManager : MonoBehaviour
         // Update current player sprite
         currentPlayerImage.sprite = PlayerManager.Instance.GetCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
 
+        var highScores = new Dictionary<OrbTypes, HighScoreList>();
+        highScores.Add(OrbTypes.Ice, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Mud, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Forest, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Poison, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Sand, new HighScoreList(0, null));
+
         // Update orb scores
         foreach (var (player, panel) in playerPannelList.Select(x => (x.Key, x.Value)))
         {
-            var iceText = panel.transform.Find("OrbScoreContainer/IceScoreText").GetComponent<Text>();
-            iceText.text = player.GetComponent<PlayerInfo>().orbScores[OrbTypes.Ice].ToString();
+            UpdatePlayerPanelScore(panel, player, "IceScoreText", OrbTypes.Ice);
+            UpdatePlayerPanelScore(panel, player, "MudScoreText", OrbTypes.Mud);
+            UpdatePlayerPanelScore(panel, player, "ForestScoreText", OrbTypes.Forest);
+            UpdatePlayerPanelScore(panel, player, "PoisonScoreText", OrbTypes.Poison);
+            UpdatePlayerPanelScore(panel, player, "SandScoreText", OrbTypes.Sand);
 
-            var mudText = panel.transform.Find("OrbScoreContainer/MudScoreText").GetComponent<Text>();
-            mudText.text = player.GetComponent<PlayerInfo>().orbScores[OrbTypes.Mud].ToString();
+            HighScoreList highScoreList;
 
-            var forestText = panel.transform.Find("OrbScoreContainer/ForestScoreText").GetComponent<Text>();
-            forestText.text = player.GetComponent<PlayerInfo>().orbScores[OrbTypes.Forest].ToString();
+            foreach (OrbTypes orbType in Enum.GetValues(typeof(OrbTypes)))
+            {
+                var playerScore = player.GetComponent<PlayerInfo>().orbScores[orbType];
 
-            var poisonText = panel.transform.Find("OrbScoreContainer/PoisonScoreText").GetComponent<Text>();
-            poisonText.text = player.GetComponent<PlayerInfo>().orbScores[OrbTypes.Poison].ToString();
+                highScores.TryGetValue(orbType, out highScoreList);
 
-            var sandText = panel.transform.Find("OrbScoreContainer/SandScoreText").GetComponent<Text>();
-            sandText.text = player.GetComponent<PlayerInfo>().orbScores[OrbTypes.Sand].ToString();
+                if (playerScore > highScoreList.Value)
+                {
+                    // create a new one and attach
+                    highScores[orbType] = new HighScoreList(playerScore, player);
+                }
+                else if (playerScore == highScoreList.Value && highScoreList.Value != 0)
+                {
+                    // add to list
+                    highScoreList.AddPlayerToList(player);
+                }
+            }
+        }
+
+        UpdateResourcePanelScore(highScores, "IceOwnerIcon", OrbTypes.Ice);
+        UpdateResourcePanelScore(highScores, "MudOwnerIcon", OrbTypes.Mud);
+        UpdateResourcePanelScore(highScores, "ForestOwnerIcon", OrbTypes.Forest);
+        UpdateResourcePanelScore(highScores, "PoisonOwnerIcon", OrbTypes.Poison);
+        UpdateResourcePanelScore(highScores, "SandOwnerIcon", OrbTypes.Sand);
+    }
+
+    private void UpdatePlayerPanelScore(GameObject panel, GameObject player, string id, OrbTypes type)
+    {
+        var mudText = panel.transform.Find("OrbScoreContainer/" + id).GetComponent<Text>();
+        mudText.text = player.GetComponent<PlayerInfo>().orbScores[type].ToString();
+    }
+
+    private void UpdateResourcePanelScore(Dictionary<OrbTypes, HighScoreList> highScores, string id, OrbTypes type)
+    {
+        // Eval scores and update
+        if (highScores[type].GetPlayerList().Count == 1 && highScores[type].Value != 0)
+        {
+            var ownerImage = this.transform.Find("ResourcePanel/" + id).GetComponent<Image>();
+            ownerImage.sprite = highScores[type].GetPlayerList()[0].GetComponent<SpriteRenderer>().sprite;
+        }
+        else
+        {
+            var ownerImage = this.transform.Find("ResourcePanel/" + id).GetComponent<Image>();
+            ownerImage.sprite = alienUnknownImage;
         }
     }
 

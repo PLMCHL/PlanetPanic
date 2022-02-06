@@ -54,8 +54,6 @@ public class GameSessionManager : MonoBehaviour
             // Select direction
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                // TODO hide selection arrow
-
                 state = State.Moving;
             }
 
