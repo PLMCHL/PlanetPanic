@@ -21,6 +21,7 @@ public class GameSessionManager : MonoBehaviour
     public Tilemap directionMap;
     public Tilemap orbMap;
 
+    private int turnNumber = 0;
     private int movementsLeft = 0;
 
     private PlayerManager playerManager;
@@ -103,7 +104,8 @@ public class GameSessionManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                // Switch User
+                // End turn, Switch User
+                turnNumber++;
                 playerManager.EndPlayerTurn();
 
                 DiceRoller.Instance.StartRoll();
@@ -111,7 +113,7 @@ public class GameSessionManager : MonoBehaviour
             }
         }
 
-        gameInterfaceManager.UpdateInterface();
+        gameInterfaceManager.UpdateInterface(turnNumber/PLAYER_COUNT);
     }
 
     private bool MoveCurrentPlayer()

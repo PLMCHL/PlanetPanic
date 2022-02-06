@@ -26,11 +26,16 @@ public class GameInterfaceManager : MonoBehaviour
         }
     }
 
-    public void UpdateInterface()
+    public void UpdateInterface(int turnNumber)
     {
+        // Update turn number
+        var turnValueObj = this.transform.Find("TurnPanel/TurnValue").GetComponent<Text>();
+        turnValueObj.text = turnNumber.ToString();
+
         // Update current player sprite
         currentPlayerImage.sprite = PlayerManager.Instance.GetCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
 
+        // Update scores
         var highScores = new Dictionary<OrbTypes, HighScoreList>();
         highScores.Add(OrbTypes.Ice, new HighScoreList(0, null));
         highScores.Add(OrbTypes.Mud, new HighScoreList(0, null));
