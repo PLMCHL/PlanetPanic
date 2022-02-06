@@ -25,10 +25,7 @@ public class DiceRoller : MonoBehaviour
     {
         if (rolling)
         {
-            currentRoll = Random.Range(1, DICE_FACES);
-
-            var currentRollObj = gameObject.transform.Find("DiceRollerText").GetComponent<Text>();
-            currentRollObj.text = this.currentRoll.ToString();
+            SetValue(Random.Range(1, DICE_FACES));
         }
     }
 
@@ -41,5 +38,13 @@ public class DiceRoller : MonoBehaviour
     {
         rolling = false;
         return currentRoll;
+    }
+
+    public void SetValue(int value)
+    {
+        currentRoll = value;
+
+        var currentRollObj = gameObject.transform.Find("DiceRollerText").GetComponent<Text>();
+        currentRollObj.text = this.currentRoll.ToString();
     }
 }

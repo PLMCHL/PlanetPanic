@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -143,11 +144,13 @@ public class GameSessionManager : MonoBehaviour
 
         var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
 
-        // TODO add short wait, to make it easier to follow
-
         currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
         movementsLeft--;
+        DiceRoller.Instance.SetValue(movementsLeft);
+
+        // Add short wait, to make it easier to follow
+        Thread.Sleep(200);
 
         return true;
     }
