@@ -1,10 +1,11 @@
-name: Get Unity license activation file 🔐
+name: Fetch Unity License
 
 on: workflow_dispatch
 
+# Go to https://license.unity3d.com/manual to get license
 jobs:
   requestManualActivationFile:
-    name: Request manual activation file 🔑
+    name: Request Manual Activation File
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
