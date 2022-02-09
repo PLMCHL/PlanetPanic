@@ -1,5 +1,7 @@
 # Planet Panic
  
+https://plmchl.github.io/PlanetPanic/
+ 
 Your crew is stranded on a strange new planet. Compete to control each biome and win the right to rule the land!
 
 ## Objectives
