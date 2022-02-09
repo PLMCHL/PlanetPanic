@@ -42,8 +42,7 @@ public class DirectionSelectorManager : MonoBehaviour
 
     public void StartSelection(Tilemap directionMap, GameObject currentPlayer)
     {
-        directionSelected = 0; // TODO random?
-
+        directionSelected = 0;
         UpdateSelector(directionMap, currentPlayer);
     }
 
@@ -61,6 +60,7 @@ public class DirectionSelectorManager : MonoBehaviour
         var directionTarget = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
         // Display directional line
+        // TODO: Select direction with arrows instead of line
         lineRenderer.enabled = true;
 
         var translation = new Vector3(0, 0, -2);

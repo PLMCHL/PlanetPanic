@@ -49,7 +49,6 @@ public class GameSessionManager : MonoBehaviour
 
     void Update()
     {
-        // TODO: Select direction with arrows
         if (state == State.DirectionSelect)
         {
             // Select direction
