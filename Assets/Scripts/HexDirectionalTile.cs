@@ -1,7 +1,10 @@
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
+#if UNITY_EDITOR
+using UnityEditor.Tilemaps;
+#endif
 
 public class HexDirectionalTile : Tile
 {
@@ -51,8 +54,8 @@ public class HexDirectionalTile : Tile
         return spriteManager.getDirectionCombo(directionSprites.ToArray());
     }
 
-
-        [CreateTileFromPalette]
+#if UNITY_EDITOR
+    [CreateTileFromPalette]
     public static TileBase CreateDirectionalTile(Sprite sprite)
     {
         var tClass = ScriptableObject.CreateInstance<HexDirectionalTile>();
@@ -60,4 +63,5 @@ public class HexDirectionalTile : Tile
         tClass.name = sprite.name;
         return tClass;
     }
+#endif
 }
