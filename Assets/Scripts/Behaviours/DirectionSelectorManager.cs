@@ -3,9 +3,13 @@ using UnityEngine.Tilemaps;
 
 public class DirectionSelectorManager : MonoBehaviour
 {
+    private float LINE_SPACING = 0.225f;
+    private float LINE_LENGTH = 0.3f;
+    private Vector3 ORIGIN_RELATIVE_POSITION = new Vector3(0, 0.125f, 0);
+
     private LineRenderer lineRenderer;
-    Tilemap directionMap;
-    HexDirectionalTile directionTile;
+
+    HexDirectionalTile currentPlayerTile;
     private int? directionSelected = null; // Try state, non-null means it's actively being used to select a direction
     private int directionCount = 0;
 
@@ -23,16 +27,9 @@ public class DirectionSelectorManager : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
-        // Create line
-        lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
-        lineRenderer.startColor = Color.black;
-        lineRenderer.endColor = Color.black;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
-        lineRenderer.positionCount = 2;
-        lineRenderer.useWorldSpace = true;
+        lineRenderer = this.gameObject.GetComponent<LineRenderer>();
     }
 
     public bool Active()
@@ -48,33 +45,40 @@ public class DirectionSelectorManager : MonoBehaviour
 
     public void UpdateSelector(Tilemap directionMap, GameObject currentPlayer)
     {
-        var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
-        directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
+        // Find player origin tile
+        var playerUnityCellPosition = directionMap.WorldToCell(currentPlayer.transform.position);
+        currentPlayerTile = (HexDirectionalTile)directionMap.GetTile(playerUnityCellPosition);
 
-        this.directionCount = directionTile.directions.Count;
+        // Get the directions
+        this.directionCount = currentPlayerTile.directions.Count;
+        var selectedDirection = currentPlayerTile.directions[directionSelected.Value];
 
-        var selectedDirection = directionTile.directions[directionSelected.Value];
+        // Get target direction world position
+        var targetTileCubePosition = CubeCoordUtils.UnityCellToCube(playerUnityCellPosition) + 2 * GameSessionManager.DIRECTIONS[selectedDirection];
+        var targetTileWorldPosition = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(targetTileCubePosition));
 
-        var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + 2 * GameSessionManager.DIRECTIONS[selectedDirection];
+        // Get selected target direction's orientation vector
+        var worldDirectionVector = targetTileWorldPosition - currentPlayer.transform.position;
+        worldDirectionVector.Normalize();
 
-        var directionTarget = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
+        // Get selector end positions
+        var relativeOrigin = currentPlayer.transform.position + ORIGIN_RELATIVE_POSITION;
+        var selectorStartPoint = relativeOrigin + LINE_SPACING * worldDirectionVector;
+        var selectorEndPoint = relativeOrigin + (LINE_SPACING + LINE_LENGTH) * worldDirectionVector;
 
-        // Display directional line
-        // TODO: Select direction with arrows instead of line
+        // Display directional arrow
         lineRenderer.enabled = true;
-
-        var translation = new Vector3(0, 0, -2);
-        lineRenderer.SetPosition(0, currentPlayer.transform.position + translation);
-        lineRenderer.SetPosition(1, directionTarget + translation);
+        lineRenderer.SetPosition(0, selectorStartPoint);
+        lineRenderer.SetPosition(1, selectorEndPoint);
     }
 
     public int CompleteSelection()
     {
         lineRenderer.enabled = false;
 
-        var dir = directionTile.directions[directionSelected.Value];
+        var dir = currentPlayerTile.directions[directionSelected.Value];
 
-        directionTile = null;
+        currentPlayerTile = null;
         directionSelected = null;
         directionCount = 0;
 
