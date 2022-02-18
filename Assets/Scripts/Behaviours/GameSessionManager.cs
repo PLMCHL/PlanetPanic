@@ -25,6 +25,7 @@ public class GameSessionManager : MonoBehaviour
         InitializeGameInterface();
 
         DiceRoller.Instance.StartRoll();
+        MainCameraManager.Instance.ZoomTo(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
         state = State.Rolling;
     }
 
@@ -65,6 +66,8 @@ public class GameSessionManager : MonoBehaviour
 
                 PlayerListManager.Instance.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
 
+                // Zoom out to overview
+                MainCameraManager.Instance.ZoomOut();
                 state = State.Waiting;
             }
         }
@@ -89,6 +92,9 @@ public class GameSessionManager : MonoBehaviour
                 PlayerListManager.Instance.EndPlayerTurn();
 
                 DiceRoller.Instance.StartRoll();
+
+                // Zoom in to player
+                MainCameraManager.Instance.ZoomTo(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
                 state = State.Rolling;
             }
         }
@@ -125,6 +131,9 @@ public class GameSessionManager : MonoBehaviour
         var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + MapManager.DIRECTIONS[direction];
 
         currentPlayer.transform.position = MapManager.Instance.DirectionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
+
+        // Camera follow player
+        MainCameraManager.Instance.ZoomTo(currentPlayer.transform.position);
 
         movementsLeft--;
         DiceRoller.Instance.SetValue(movementsLeft);
