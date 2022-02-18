@@ -37,16 +37,18 @@ public class DirectionSelectorManager : MonoBehaviour
         return directionSelected.HasValue;
     }
 
-    public void StartSelection(Tilemap directionMap, GameObject currentPlayer)
+    public void StartSelection(GameObject player)
     {
         directionSelected = 0;
-        UpdateSelector(directionMap, currentPlayer);
+        UpdateSelector(player);
     }
 
-    public void UpdateSelector(Tilemap directionMap, GameObject currentPlayer)
+    public void UpdateSelector(GameObject player)
     {
+        var directionMap = MapManager.Instance.DirectionMap;
+
         // Find player origin tile
-        var playerUnityCellPosition = directionMap.WorldToCell(currentPlayer.transform.position);
+        var playerUnityCellPosition = directionMap.WorldToCell(player.transform.position);
         currentPlayerTile = (HexDirectionalTile)directionMap.GetTile(playerUnityCellPosition);
 
         // Get the directions
@@ -54,15 +56,15 @@ public class DirectionSelectorManager : MonoBehaviour
         var selectedDirection = currentPlayerTile.directions[directionSelected.Value];
 
         // Get target direction world position
-        var targetTileCubePosition = CubeCoordUtils.UnityCellToCube(playerUnityCellPosition) + 2 * GameSessionManager.DIRECTIONS[selectedDirection];
+        var targetTileCubePosition = CubeCoordUtils.UnityCellToCube(playerUnityCellPosition) + 2 * MapManager.DIRECTIONS[selectedDirection];
         var targetTileWorldPosition = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(targetTileCubePosition));
 
         // Get selected target direction's orientation vector
-        var worldDirectionVector = targetTileWorldPosition - currentPlayer.transform.position;
+        var worldDirectionVector = targetTileWorldPosition - player.transform.position;
         worldDirectionVector.Normalize();
 
         // Get selector end positions
-        var relativeOrigin = currentPlayer.transform.position + ORIGIN_RELATIVE_POSITION;
+        var relativeOrigin = player.transform.position + ORIGIN_RELATIVE_POSITION;
         var selectorStartPoint = relativeOrigin + LINE_SPACING * worldDirectionVector;
         var selectorEndPoint = relativeOrigin + (LINE_SPACING + LINE_LENGTH) * worldDirectionVector;
 
