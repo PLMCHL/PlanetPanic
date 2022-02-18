@@ -24,7 +24,7 @@ public class GameSessionManager : MonoBehaviour
     private int turnNumber = 0;
     private int movementsLeft = 0;
 
-    private PlayerManager playerManager;
+    private PlayerListManager playerManager;
     private GameInterfaceManager gameInterfaceManager;
 
     public State state { get; private set; }
@@ -156,7 +156,7 @@ public class GameSessionManager : MonoBehaviour
 
     private void InitializePlayers()
     {
-        playerManager = PlayerManager.Instance;
+        playerManager = PlayerListManager.Instance;
         playerManager.Initialize(PLAYER_COUNT, START_POSITION);
         playerManager.SetCurrentPlayerIndex(0);
     }

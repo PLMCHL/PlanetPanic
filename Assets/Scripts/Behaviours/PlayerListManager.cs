@@ -1,21 +1,21 @@
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerListManager : MonoBehaviour
 {
     public GameObject PlayerPrefab;
 
-    private static PlayerManager instance;
+    private static PlayerListManager instance;
 
     private int currentPlayerIndex;
     private GameObject[] players;
 
-    public static PlayerManager Instance
+    public static PlayerListManager Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<PlayerManager>();
+                instance = FindObjectOfType<PlayerListManager>();
             }
             return instance;
         }
@@ -29,8 +29,6 @@ public class PlayerManager : MonoBehaviour
         {
             var playerObj = Instantiate(PlayerPrefab, startPosition, Quaternion.identity);
             players[i] = playerObj;
-
-            // set player object and image
         }
     }
 
