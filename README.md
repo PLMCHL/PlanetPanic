@@ -13,3 +13,7 @@ Your crew is stranded on a strange new planet. Compete to control each biome and
 ## Controls
 - Press `space` to select dice and continue.
 - Press `left arrow` or `right arrow` to select a direction when required.
+
+## Additional
+- Press 'H' for help
+- Press 'O' for map overview

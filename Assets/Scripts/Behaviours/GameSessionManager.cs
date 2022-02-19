@@ -25,7 +25,7 @@ public class GameSessionManager : MonoBehaviour
         InitializeGameInterface();
 
         DiceRoller.Instance.StartRoll();
-        MainCameraManager.Instance.ZoomTo(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
+        MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
         state = State.Rolling;
     }
 
@@ -65,7 +65,7 @@ public class GameSessionManager : MonoBehaviour
                 PlayerListManager.Instance.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
 
                 // Zoom out to overview
-                MainCameraManager.Instance.ZoomOut();
+                MainCameraManager.Instance.ZoomToOverview();
                 state = State.Waiting;
             }
             else
@@ -96,12 +96,17 @@ public class GameSessionManager : MonoBehaviour
                 DiceRoller.Instance.StartRoll();
 
                 // Zoom in to player
-                MainCameraManager.Instance.ZoomTo(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
+                MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
                 state = State.Rolling;
             }
         }
 
         GameInterfaceManager.Instance.UpdateInterface(turnNumber/PLAYER_COUNT);
+
+        if (Input.GetKey(KeyCode.O))
+        {
+            MainCameraManager.Instance.ForceOverview();
+        }
     }
 
     private bool MoveCurrentPlayer()
@@ -135,7 +140,7 @@ public class GameSessionManager : MonoBehaviour
         currentPlayer.transform.position = MapManager.Instance.DirectionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
         // Camera follow player
-        MainCameraManager.Instance.ForceTo(currentPlayer.transform.position);
+        MainCameraManager.Instance.ForceZoomToTarget(currentPlayer.transform.position);
 
         movementsLeft--;
         DiceRoller.Instance.SetValue(movementsLeft);

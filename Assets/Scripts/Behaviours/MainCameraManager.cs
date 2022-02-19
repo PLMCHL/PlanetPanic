@@ -40,19 +40,25 @@ public class MainCameraManager : MonoBehaviour
         this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
     }
 
-    public void ZoomOut()
+    public void ForceOverview()
+    {
+        this.transform.position = overviewPosition;
+        this.GetComponent<Camera>().orthographicSize = overviewOrthographicSize;
+    }
+
+    public void ZoomToOverview()
     {
         this.targetPosition = overviewPosition;
         this.targetOrthographicSize = overviewOrthographicSize;
     }
 
-    public void ZoomTo(Vector3 position)
+    public void ZoomToTarget(Vector3 position)
     {
         this.targetPosition = position + ZOOM_IN_DISTANCE;
         this.targetOrthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
     }
 
-    public void ForceTo(Vector3 position)
+    public void ForceZoomToTarget(Vector3 position)
     {
         this.targetPosition = position + ZOOM_IN_DISTANCE;
         this.targetOrthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
