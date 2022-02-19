@@ -33,10 +33,10 @@ public class MainCameraManager : MonoBehaviour
 
     void Update()
     {
-        var newPosition = MoveTowards(this.transform.position, targetPosition, SPEED * Time.deltaTime);
+        var newPosition = Vector3Utils.MoveTowards(this.transform.position, targetPosition, SPEED);
         this.transform.position = newPosition;
 
-        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED * Time.deltaTime);
+        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED);
         this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
     }
 
@@ -65,13 +65,5 @@ public class MainCameraManager : MonoBehaviour
 
         this.GetComponent<Camera>().orthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
         this.transform.position = targetPosition;
-    }
-
-    private Vector3 MoveTowards(Vector3 current, Vector3 target, float speed)
-    {
-        var newX = Mathf.MoveTowards(current.x, target.x, SPEED * Time.deltaTime);
-        var newY = Mathf.MoveTowards(current.y, target.y, SPEED * Time.deltaTime);
-        var newZ = Mathf.MoveTowards(current.z, target.z, SPEED * Time.deltaTime);
-        return new Vector3(newX, newY, newZ);
     }
 }
