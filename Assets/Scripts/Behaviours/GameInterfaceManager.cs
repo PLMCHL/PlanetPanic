@@ -27,9 +27,7 @@ public class GameInterfaceManager : MonoBehaviour
 
     public void UpdateInterface(int turnNumber)
     {
-        // Update turn number
-        var turnValueObj = this.transform.Find("TurnPanel/TurnValue").GetComponent<Text>();
-        turnValueObj.text = turnNumber.ToString();
+        UpdateTurnCounter(turnNumber);
 
         // Update current player sprite
         currentPlayerImage.sprite = PlayerListManager.Instance.GetCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
@@ -89,6 +87,12 @@ public class GameInterfaceManager : MonoBehaviour
         }
 
         return highScores;
+    }
+
+    public void UpdateTurnCounter(int turnNumber)
+    {
+        var turnValueObj = this.transform.Find("TurnPanel/TurnValue").GetComponent<Text>();
+        turnValueObj.text = turnNumber.ToString();
     }
 
     private void UpdatePlayerPanelScore(GameObject panel, GameObject player, string id, OrbTypes type)

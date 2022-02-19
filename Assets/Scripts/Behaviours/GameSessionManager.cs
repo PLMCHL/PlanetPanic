@@ -168,6 +168,7 @@ public class GameSessionManager : MonoBehaviour
                 if (score > highScore)
                 {
                     winner = player;
+                    highScore = score;
                 }
                 else if (score == highScore) // Resolve when more than one player have the same number of biomes controlled
                 {
@@ -186,9 +187,11 @@ public class GameSessionManager : MonoBehaviour
                 MainCameraManager.Instance.ZoomToTarget(winner.transform.position);
             }
 
-            // Clear the dice roller
+            // Clear the remaining interface
+            // TODO Isolate clear functionality
             DiceRoller.Instance.Clear();
             GameInterfaceManager.Instance.ClearCurrentPlayer();
+            GameInterfaceManager.Instance.UpdateTurnCounter(turnNumber / PLAYER_COUNT - 1);
         }
     }
 
