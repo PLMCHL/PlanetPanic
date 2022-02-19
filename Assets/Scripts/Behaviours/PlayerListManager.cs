@@ -39,6 +39,21 @@ public class PlayerListManager : MonoBehaviour
     public void EndPlayerTurn()
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
+
+        // Pull current player sprite to front
+        for (int i = 0; i < players.Length; i++)
+        {
+            var spriteRenderer = players[i].GetComponent<SpriteRenderer>();
+
+            if (i != currentPlayerIndex)
+            {
+                spriteRenderer.sortingOrder = 10;
+            }
+            else
+            {
+                spriteRenderer.sortingOrder = 11;
+            }
+        }
     }
 
     public GameObject GetCurrentPlayer()
