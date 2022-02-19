@@ -47,4 +47,12 @@ public class DiceRoller : MonoBehaviour
         var currentRollObj = gameObject.transform.Find("DiceRollerText").GetComponent<Text>();
         currentRollObj.text = this.currentRoll.ToString();
     }
+
+    public void Clear()
+    {
+        rolling = false;
+
+        var currentRollObj = gameObject.transform.Find("DiceRollerText").GetComponent<Text>();
+        currentRollObj.text = "R";
+    }
 }
