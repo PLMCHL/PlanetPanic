@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameInterfaceManager : MonoBehaviour
 {
+    private int PLAYER_INFO_SIZE_PIXELS = 200;
+
     public Image currentPlayerImage;
     public Sprite alienUnknownImage;
     public GameObject PlayerPanelPrefab;
@@ -149,6 +151,10 @@ public class GameInterfaceManager : MonoBehaviour
             var avatarImage = playerPanel.transform.Find("PlayerImage").GetComponent<Image>();
             avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;
         }
+
+        // Adjust size of panel
+        RectTransform rt = playersPanel.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(PLAYER_INFO_SIZE_PIXELS * allPlayers.Length, rt.sizeDelta.y);
     }
 
     public void ShowAnnouncementPanel(String text)
