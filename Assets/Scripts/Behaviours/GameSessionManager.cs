@@ -1,35 +1,17 @@
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class GameSessionManager : MonoBehaviour
 {
     private const int PLAYER_COUNT = 2;
-    private Vector3Int START_POSITION = new Vector3Int(0, 0, 0);
-
-    public static List<Vector3Int> DIRECTIONS = new List<Vector3Int>
-    {
-        new Vector3Int(0, -1, 1),
-        new Vector3Int(1, -1, 0),
-        new Vector3Int(1, 0, -1),
-        new Vector3Int(0, 1, -1),
-        new Vector3Int(-1, 1, 0),
-        new Vector3Int(-1, 0, 1)
-    };
-
-    public Tilemap directionMap;
-    public Tilemap orbMap;
-
+   
     private int turnNumber = 0;
     private int movementsLeft = 0;
-
-    private PlayerManager playerManager;
-    private GameInterfaceManager gameInterfaceManager;
 
     public State state { get; private set; }
     public enum State
     {
+        WaitToStart,
         Rolling,
         Moving,
         DirectionSelect,
@@ -43,13 +25,25 @@ public class GameSessionManager : MonoBehaviour
         InitializePlayers();
         InitializeGameInterface();
 
-        DiceRoller.Instance.StartRoll();
-        state = State.Rolling;
+        MainCameraManager.Instance.ZoomToOverview();
+        state = State.WaitToStart;
     }
 
     void Update()
     {
-        if (state == State.DirectionSelect)
+        if (state == State.WaitToStart)
+        {
+            // Start game
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                GameInterfaceManager.Instance.HideWaitToStartPanel();
+
+                DiceRoller.Instance.StartRoll();
+                MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
+                state = State.Rolling;
+            }
+        }
+        else if (state == State.DirectionSelect)
         {
             // Select direction
             if (Input.GetKeyDown(KeyCode.Space))
@@ -67,24 +61,29 @@ public class GameSessionManager : MonoBehaviour
                 DirectionSelectorManager.Instance.IncrementSelection(1);
             }
 
-            var currentPlayer = playerManager.GetCurrentPlayer();
-            DirectionSelectorManager.Instance.UpdateSelector(directionMap, currentPlayer);
+            var currentPlayer = PlayerListManager.Instance.GetCurrentPlayer();
+            DirectionSelectorManager.Instance.UpdateSelector(currentPlayer);
         }
         else if (state == State.Moving)
         {
-            var completed = MoveCurrentPlayer();
-
             // If there are no movements left, stop the player and wait to end turn
             if (movementsLeft == 0)
             {
                 // Grant player an orb when falling on space
-                var newPos = directionMap.WorldToCell(playerManager.GetCurrentPlayer().transform.position);
-                HexOrbTile orbTile = (HexOrbTile)orbMap.GetTile(newPos);
+                var newPos = MapManager.Instance.DirectionMap.WorldToCell(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
+                HexOrbTile orbTile = (HexOrbTile)MapManager.Instance.OrbMap.GetTile(newPos);
                 Debug.Log("ORB TYPE: " + orbTile.orbType.ToString());
 
-                playerManager.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
+                PlayerListManager.Instance.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
 
+                // Quick pause before zooming out to overview
+                Thread.Sleep(500);
+                MainCameraManager.Instance.ZoomToOverview();
                 state = State.Waiting;
+            }
+            else
+            {
+                MoveCurrentPlayer();
             }
         }
         else if (state == State.Rolling)
@@ -105,31 +104,39 @@ public class GameSessionManager : MonoBehaviour
             {
                 // End turn, Switch User
                 turnNumber++;
-                playerManager.EndPlayerTurn();
+                PlayerListManager.Instance.EndPlayerTurn();
 
                 DiceRoller.Instance.StartRoll();
+
+                // Zoom in to player
+                MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
                 state = State.Rolling;
             }
         }
 
-        gameInterfaceManager.UpdateInterface(turnNumber/PLAYER_COUNT);
+        GameInterfaceManager.Instance.UpdateInterface(turnNumber/PLAYER_COUNT);
+
+        if (Input.GetKey(KeyCode.O))
+        {
+            MainCameraManager.Instance.ForceOverview();
+        }
     }
 
     private bool MoveCurrentPlayer()
     {
-        var currentPlayer = playerManager.GetCurrentPlayer();
+        var currentPlayer = PlayerListManager.Instance.GetCurrentPlayer();
 
-        var gridPosition = directionMap.WorldToCell(currentPlayer.transform.position);
+        var gridPosition = MapManager.Instance.DirectionMap.WorldToCell(currentPlayer.transform.position);
 
-        HexDirectionalTile directionTile = (HexDirectionalTile)directionMap.GetTile(gridPosition);
+        HexDirectionalTile directionTile = (HexDirectionalTile)MapManager.Instance.DirectionMap.GetTile(gridPosition);
 
-        // Ask for selection if there is more than 1 direction
+        // Wait for selection if there is more than 1 direction
         int direction;
-        if (directionTile.directions.Count > 1) {
-
+        if (directionTile.directions.Count > 1)
+        {
             if (!DirectionSelectorManager.Instance.Active())
             {
-                DirectionSelectorManager.Instance.StartSelection(directionMap, currentPlayer);
+                DirectionSelectorManager.Instance.StartSelection(currentPlayer);
                 state = State.DirectionSelect;
                 return false;
             }
@@ -141,9 +148,12 @@ public class GameSessionManager : MonoBehaviour
             direction = directionTile.directions[0];
         }
 
-        var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + DIRECTIONS[direction];
+        var newPos = CubeCoordUtils.UnityCellToCube(gridPosition) + MapManager.DIRECTIONS[direction];
 
-        currentPlayer.transform.position = directionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
+        currentPlayer.transform.position = MapManager.Instance.DirectionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
+
+        // Camera follow player
+        MainCameraManager.Instance.ForceZoomToTarget(currentPlayer.transform.position);
 
         movementsLeft--;
         DiceRoller.Instance.SetValue(movementsLeft);
@@ -156,15 +166,12 @@ public class GameSessionManager : MonoBehaviour
 
     private void InitializePlayers()
     {
-        playerManager = PlayerManager.Instance;
-        playerManager.Initialize(PLAYER_COUNT, START_POSITION);
-        playerManager.SetCurrentPlayerIndex(0);
+        PlayerListManager.Instance.Initialize(PLAYER_COUNT, MapManager.START_POSITION);
+        PlayerListManager.Instance.SetCurrentPlayerIndex(0);
     }
 
     private void InitializeGameInterface()
     {
-        gameInterfaceManager = GameInterfaceManager.Instance;
-        gameInterfaceManager.Initialize();
+        GameInterfaceManager.Instance.Initialize();
     }
-
 }

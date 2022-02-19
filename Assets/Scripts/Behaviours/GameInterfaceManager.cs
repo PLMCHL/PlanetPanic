@@ -33,7 +33,7 @@ public class GameInterfaceManager : MonoBehaviour
         turnValueObj.text = turnNumber.ToString();
 
         // Update current player sprite
-        currentPlayerImage.sprite = PlayerManager.Instance.GetCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
+        currentPlayerImage.sprite = PlayerListManager.Instance.GetCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
 
         // Update scores
         var highScores = new Dictionary<OrbTypes, HighScoreList>();
@@ -107,7 +107,7 @@ public class GameInterfaceManager : MonoBehaviour
 
         var playersPanel = this.transform.Find("PlayersPanel");
 
-        var allPlayers = PlayerManager.Instance.GetAllPlayers();
+        var allPlayers = PlayerListManager.Instance.GetAllPlayers();
 
         // set up player portrait and info
         foreach (var player in allPlayers)
@@ -119,6 +119,14 @@ public class GameInterfaceManager : MonoBehaviour
 
             // Set Panel avatar iamge
             var avatarImage = playerPanel.transform.Find("PlayerImage").GetComponent<Image>();
-            avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;        }        
+            avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;
+        }
+    }
+
+    public void HideWaitToStartPanel()
+    {
+        var waitToStartPanelCanvasGroup = this.transform.Find("WaitToStartPanel").GetComponent<CanvasGroup>();
+        waitToStartPanelCanvasGroup.alpha = 0;
+        waitToStartPanelCanvasGroup.interactable = false;
     }
 }
