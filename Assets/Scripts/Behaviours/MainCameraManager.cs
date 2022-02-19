@@ -4,7 +4,7 @@ public class MainCameraManager : MonoBehaviour
 {
     private Vector3 ZOOM_IN_DISTANCE = new Vector3(0, 0, -1);
     private float ZOOM_IN_ORTHOGRAPHIC_SIZE = 2;
-    private float SPEED = 5;
+    private float SPEED = 15;
 
     private static MainCameraManager instance;
     public static MainCameraManager Instance
@@ -33,25 +33,23 @@ public class MainCameraManager : MonoBehaviour
 
     void Update()
     {
-        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED * Time.deltaTime);
-        this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
-
         var newPosition = MoveTowards(this.transform.position, targetPosition, SPEED * Time.deltaTime);
         this.transform.position = newPosition;
+
+        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED * Time.deltaTime);
+        this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
     }
 
     public void ZoomOut()
     {
         this.targetPosition = overviewPosition;
         this.targetOrthographicSize = overviewOrthographicSize;
-        Update();
     }
 
     public void ZoomTo(Vector3 position)
     {
         this.targetPosition = position + ZOOM_IN_DISTANCE;
         this.targetOrthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
-        Update();
     }
 
     public void ForceTo(Vector3 position)
