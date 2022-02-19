@@ -35,46 +35,10 @@ public class GameInterfaceManager : MonoBehaviour
         {
             currentPlayerImage.sprite = currentPlayer.GetComponent<SpriteRenderer>().sprite;
         }
-        // Update player planel
-        foreach (var (player, panel) in playerPannelList.Select(x => (x.Key, x.Value)))
+
+        if (playerPannelList != null)
         {
-            UpdatePlayerPanelScore(panel, player, "IceScoreText", OrbTypes.Ice);
-            UpdatePlayerPanelScore(panel, player, "MudScoreText", OrbTypes.Mud);
-            UpdatePlayerPanelScore(panel, player, "ForestScoreText", OrbTypes.Forest);
-            UpdatePlayerPanelScore(panel, player, "PoisonScoreText", OrbTypes.Poison);
-            UpdatePlayerPanelScore(panel, player, "SandScoreText", OrbTypes.Sand);
-        }
-
-        // Update high scores
-        var highScores = GetHighScoresList();
-
-        UpdateResourcePanelScore(highScores, "IceOwnerIcon", OrbTypes.Ice);
-        UpdateResourcePanelScore(highScores, "MudOwnerIcon", OrbTypes.Mud);
-        UpdateResourcePanelScore(highScores, "ForestOwnerIcon", OrbTypes.Forest);
-        UpdateResourcePanelScore(highScores, "PoisonOwnerIcon", OrbTypes.Poison);
-        UpdateResourcePanelScore(highScores, "SandOwnerIcon", OrbTypes.Sand);
-    }
-
-    // TODO move to a better space
-    public Dictionary<OrbTypes, HighScoreList> GetHighScoresList()
-    {
-        var highScores = new Dictionary<OrbTypes, HighScoreList>();
-        highScores.Add(OrbTypes.Ice, new HighScoreList(0, null));
-        highScores.Add(OrbTypes.Mud, new HighScoreList(0, null));
-        highScores.Add(OrbTypes.Forest, new HighScoreList(0, null));
-        highScores.Add(OrbTypes.Poison, new HighScoreList(0, null));
-        highScores.Add(OrbTypes.Sand, new HighScoreList(0, null));
-
-        // Update orb scores
-        if (playerPannelList !=null)
-        {
-            var highScores = new Dictionary<OrbTypes, HighScoreList>();
-            highScores.Add(OrbTypes.Ice, new HighScoreList(0, null));
-            highScores.Add(OrbTypes.Mud, new HighScoreList(0, null));
-            highScores.Add(OrbTypes.Forest, new HighScoreList(0, null));
-            highScores.Add(OrbTypes.Poison, new HighScoreList(0, null));
-            highScores.Add(OrbTypes.Sand, new HighScoreList(0, null));
-
+            // Update player planel
             foreach (var (player, panel) in playerPannelList.Select(x => (x.Key, x.Value)))
             {
                 UpdatePlayerPanelScore(panel, player, "IceScoreText", OrbTypes.Ice);
@@ -82,27 +46,58 @@ public class GameInterfaceManager : MonoBehaviour
                 UpdatePlayerPanelScore(panel, player, "ForestScoreText", OrbTypes.Forest);
                 UpdatePlayerPanelScore(panel, player, "PoisonScoreText", OrbTypes.Poison);
                 UpdatePlayerPanelScore(panel, player, "SandScoreText", OrbTypes.Sand);
+            }
 
-                HighScoreList highScoreList;
+            // Update high scores
+            var highScores = GetHighScoresList();
 
-                foreach (OrbTypes orbType in Enum.GetValues(typeof(OrbTypes)))
+            UpdateResourcePanelScore(highScores, "IceOwnerIcon", OrbTypes.Ice);
+            UpdateResourcePanelScore(highScores, "MudOwnerIcon", OrbTypes.Mud);
+            UpdateResourcePanelScore(highScores, "ForestOwnerIcon", OrbTypes.Forest);
+            UpdateResourcePanelScore(highScores, "PoisonOwnerIcon", OrbTypes.Poison);
+            UpdateResourcePanelScore(highScores, "SandOwnerIcon", OrbTypes.Sand);
+        }
+    }
+
+    // TODO move to a better space
+    public Dictionary<OrbTypes, HighScoreList> GetHighScoresList()
+    {
+        var highScores = new Dictionary<OrbTypes, HighScoreList>();
+
+        highScores.Add(OrbTypes.Ice, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Mud, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Forest, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Poison, new HighScoreList(0, null));
+        highScores.Add(OrbTypes.Sand, new HighScoreList(0, null));
+
+        foreach (var (player, panel) in playerPannelList.Select(x => (x.Key, x.Value)))
+        {
+            UpdatePlayerPanelScore(panel, player, "IceScoreText", OrbTypes.Ice);
+            UpdatePlayerPanelScore(panel, player, "MudScoreText", OrbTypes.Mud);
+            UpdatePlayerPanelScore(panel, player, "ForestScoreText", OrbTypes.Forest);
+            UpdatePlayerPanelScore(panel, player, "PoisonScoreText", OrbTypes.Poison);
+            UpdatePlayerPanelScore(panel, player, "SandScoreText", OrbTypes.Sand);
+
+            HighScoreList highScoreList;
+
+            foreach (OrbTypes orbType in Enum.GetValues(typeof(OrbTypes)))
+            {
+                var playerScore = player.GetComponent<PlayerInfo>().orbScores[orbType];
+
+                highScores.TryGetValue(orbType, out highScoreList);
+
+                if (playerScore > highScoreList.Value)
                 {
-                    var playerScore = player.GetComponent<PlayerInfo>().orbScores[orbType];
-
-                    highScores.TryGetValue(orbType, out highScoreList);
-
-                    if (playerScore > highScoreList.Value)
-                    {
-                        // create a new one and attach
-                        highScores[orbType] = new HighScoreList(playerScore, player);
-                    }
-                    else if (playerScore == highScoreList.Value && highScoreList.Value != 0)
-                    {
-                        // add to list
-                        highScoreList.AddPlayerToList(player);
-                    }
+                    // create a new one and attach
+                    highScores[orbType] = new HighScoreList(playerScore, player);
+                }
+                else if (playerScore == highScoreList.Value && highScoreList.Value != 0)
+                {
+                    // add to list
+                    highScoreList.AddPlayerToList(player);
                 }
             }
+        }
 
         return highScores;
     }

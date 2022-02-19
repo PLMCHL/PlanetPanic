@@ -117,8 +117,8 @@ public class GameSessionManager : MonoBehaviour
             }
         }
 
-        var GameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / PLAYER_COUNT;
-        GameInterfaceManager.Instance.UpdateInterface(GameTurn);
+        var gameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / PLAYER_COUNT;
+        GameInterfaceManager.Instance.UpdateInterface(gameTurn);
 
         CheckWinner();
 
@@ -130,7 +130,7 @@ public class GameSessionManager : MonoBehaviour
 
     private void CheckWinner()
     {
-        if (turnNumber / PLAYER_COUNT > MAX_TURN_COUNT)
+        if (playerTurnsCount / PLAYER_COUNT > MAX_TURN_COUNT)
         {
             state = State.Ended;
 
@@ -191,7 +191,7 @@ public class GameSessionManager : MonoBehaviour
             // TODO Isolate clear functionality
             DiceRoller.Instance.Clear();
             GameInterfaceManager.Instance.ClearCurrentPlayer();
-            GameInterfaceManager.Instance.UpdateTurnCounter(turnNumber / PLAYER_COUNT - 1);
+            GameInterfaceManager.Instance.UpdateTurnCounter(playerTurnsCount / PLAYER_COUNT - 1);
         }
     }
 
