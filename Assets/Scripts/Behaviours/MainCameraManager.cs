@@ -3,8 +3,9 @@ using UnityEngine;
 public class MainCameraManager : MonoBehaviour
 {
     private Vector3 ZOOM_IN_DISTANCE = new Vector3(0, 0, -1);
-    private float ZOOM_IN_ORTHOGRAPHIC_SIZE = 2;
-    private float SPEED = 15;
+    private float ZOOM_IN_ORTHOGRAPHIC_SIZE = 3;
+    private float POSITION_SPEED = 0.5f;
+    private float ORTHO_SPEED = 0.1f;
 
     private static MainCameraManager instance;
     public static MainCameraManager Instance
@@ -33,19 +34,19 @@ public class MainCameraManager : MonoBehaviour
 
     void Update()
     {
-        var newPosition = Vector3.MoveTowards(this.transform.position, targetPosition, SPEED);
+        var newPosition = Vector3.MoveTowards(this.transform.position, targetPosition, POSITION_SPEED);
         this.transform.position = newPosition;
 
-        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED);
+        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, ORTHO_SPEED);
         this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
     }
 
     public void ForceOverview()
     {
-        var newPosition = Vector3.MoveTowards(this.transform.position, overviewPosition, 2 * SPEED);
+        var newPosition = Vector3.MoveTowards(this.transform.position, overviewPosition, 2 * POSITION_SPEED);
         this.transform.position = newPosition;
 
-        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, overviewOrthographicSize, 2 * SPEED);
+        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, overviewOrthographicSize, 2 * ORTHO_SPEED);
         this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
     }
 
