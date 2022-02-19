@@ -76,7 +76,8 @@ public class GameSessionManager : MonoBehaviour
 
                 PlayerListManager.Instance.GetCurrentPlayer().GetComponent<PlayerInfo>().AddScore(orbTile.orbType, 1);
 
-                // Zoom out to overview
+                // Quick pause before zooming out to overview
+                Thread.Sleep(500);
                 MainCameraManager.Instance.ZoomToOverview();
                 state = State.Waiting;
             }
