@@ -5,7 +5,7 @@ public class GameSessionManager : MonoBehaviour
 {
     private const int PLAYER_COUNT = 2;
    
-    private int turnNumber = 0;
+    private int playerTurnsCount = 0;
     private int movementsLeft = 0;
 
     public State state { get; private set; }
@@ -22,9 +22,6 @@ public class GameSessionManager : MonoBehaviour
     {
         Random.InitState((int)System.DateTime.Now.Ticks);
 
-        InitializePlayers();
-        InitializeGameInterface();
-
         MainCameraManager.Instance.ZoomToOverview();
         state = State.WaitToStart;
     }
@@ -37,6 +34,8 @@ public class GameSessionManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 GameInterfaceManager.Instance.HideWaitToStartPanel();
+
+                InitializePlayers();
 
                 DiceRoller.Instance.StartRoll();
                 MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
@@ -103,7 +102,7 @@ public class GameSessionManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 // End turn, Switch User
-                turnNumber++;
+                playerTurnsCount++;
                 PlayerListManager.Instance.EndPlayerTurn();
 
                 DiceRoller.Instance.StartRoll();
@@ -114,7 +113,8 @@ public class GameSessionManager : MonoBehaviour
             }
         }
 
-        GameInterfaceManager.Instance.UpdateInterface(turnNumber/PLAYER_COUNT);
+        var GameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / PLAYER_COUNT;
+        GameInterfaceManager.Instance.UpdateInterface(GameTurn);
 
         if (Input.GetKey(KeyCode.O))
         {
@@ -168,10 +168,7 @@ public class GameSessionManager : MonoBehaviour
     {
         PlayerListManager.Instance.Initialize(PLAYER_COUNT, MapManager.START_POSITION);
         PlayerListManager.Instance.SetCurrentPlayerIndex(0);
-    }
 
-    private void InitializeGameInterface()
-    {
         GameInterfaceManager.Instance.Initialize();
     }
 }

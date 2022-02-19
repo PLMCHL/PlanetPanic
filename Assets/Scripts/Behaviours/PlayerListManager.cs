@@ -58,6 +58,11 @@ public class PlayerListManager : MonoBehaviour
 
     public GameObject GetCurrentPlayer()
     {
+        if (players == null)
+        {
+            return null;
+        }
+
         return players[currentPlayerIndex];
     }
 
