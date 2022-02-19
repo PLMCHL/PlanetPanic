@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameSessionManager : MonoBehaviour
 {
     private const int PLAYER_COUNT = 2;
-    private const int MAX_TURN_COUNT = 2;
+    private const int MAX_TURN_COUNT = 20;
    
     private int turnNumber = 0;
     private int movementsLeft = 0;
