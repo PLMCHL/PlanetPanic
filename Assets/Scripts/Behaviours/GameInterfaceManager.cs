@@ -119,6 +119,14 @@ public class GameInterfaceManager : MonoBehaviour
 
             // Set Panel avatar iamge
             var avatarImage = playerPanel.transform.Find("PlayerImage").GetComponent<Image>();
-            avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;        }        
+            avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;
+        }
+    }
+
+    public void HideWaitToStartPanel()
+    {
+        var waitToStartPanelCanvasGroup = this.transform.Find("WaitToStartPanel").GetComponent<CanvasGroup>();
+        waitToStartPanelCanvasGroup.alpha = 0;
+        waitToStartPanelCanvasGroup.interactable = false;
     }
 }

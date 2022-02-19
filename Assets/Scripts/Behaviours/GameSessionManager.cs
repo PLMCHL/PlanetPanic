@@ -11,6 +11,7 @@ public class GameSessionManager : MonoBehaviour
     public State state { get; private set; }
     public enum State
     {
+        WaitToStart,
         Rolling,
         Moving,
         DirectionSelect,
@@ -24,14 +25,25 @@ public class GameSessionManager : MonoBehaviour
         InitializePlayers();
         InitializeGameInterface();
 
-        DiceRoller.Instance.StartRoll();
-        MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
-        state = State.Rolling;
+        MainCameraManager.Instance.ZoomToOverview();
+        state = State.WaitToStart;
     }
 
     void Update()
     {
-        if (state == State.DirectionSelect)
+        if (state == State.WaitToStart)
+        {
+            // Start game
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                GameInterfaceManager.Instance.HideWaitToStartPanel();
+
+                DiceRoller.Instance.StartRoll();
+                MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
+                state = State.Rolling;
+            }
+        }
+        else if (state == State.DirectionSelect)
         {
             // Select direction
             if (Input.GetKeyDown(KeyCode.Space))

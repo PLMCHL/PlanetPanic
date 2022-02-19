@@ -4,7 +4,7 @@ public class MainCameraManager : MonoBehaviour
 {
     private Vector3 ZOOM_IN_DISTANCE = new Vector3(0, 0, -1);
     private float ZOOM_IN_ORTHOGRAPHIC_SIZE = 2;
-    private float SPEED = 10;
+    private float SPEED = 15;
 
     private static MainCameraManager instance;
     public static MainCameraManager Instance
