@@ -130,15 +130,12 @@ public class GameSessionManager : MonoBehaviour
 
     private void CheckWinner()
     {
-        // Check for winner
         if (turnNumber / PLAYER_COUNT > MAX_TURN_COUNT)
         {
             state = State.Ended;
 
-            // TODO get winner
-            var highScoresList = GameInterfaceManager.Instance.GetHighScoresList();
-
             var allPlayers = PlayerListManager.Instance.GetAllPlayers();
+            var highScoresList = GameInterfaceManager.Instance.GetHighScoresList();
 
             var scores = new Dictionary<GameObject, int>();
 
@@ -149,18 +146,18 @@ public class GameSessionManager : MonoBehaviour
 
             foreach (var (orbType, highScoreList) in highScoresList.Select(x => (x.Key, x.Value)))
             {
-                var aaa = highScoreList.GetPlayerList();
+                var typeWinner = highScoreList.GetPlayerList();
 
                 if (
-                    aaa.Count > 1 // More than 2 players have it
+                    typeWinner.Count > 1 // More than 2 players have it
                     ||
-                    aaa[0] == null // No player control it
+                    typeWinner[0] == null // No player control it
                    )
                 {
                     continue;
                 }
 
-                scores[aaa[0]] += 1;
+                scores[typeWinner[0]] += 1;
             }
 
             GameObject winner = null;
@@ -171,6 +168,10 @@ public class GameSessionManager : MonoBehaviour
                 if (score > highScore)
                 {
                     winner = player;
+                }
+                else if (score == highScore) // Resolve when more than one player have the same number of biomes controlled
+                {
+                    winner = null;
                 }
             }
 
