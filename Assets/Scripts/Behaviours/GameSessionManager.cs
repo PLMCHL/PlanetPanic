@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
 public class GameSessionManager : MonoBehaviour
 {
     private const int PLAYER_COUNT = 2;
+    private const int MAX_TURN_COUNT = 20;
    
     private int playerTurnsCount = 0;
     private int movementsLeft = 0;
@@ -15,7 +18,8 @@ public class GameSessionManager : MonoBehaviour
         Rolling,
         Moving,
         DirectionSelect,
-        Waiting
+        Waiting,
+        Ended
     }
 
     void Start()
@@ -33,7 +37,7 @@ public class GameSessionManager : MonoBehaviour
             // Start game
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                GameInterfaceManager.Instance.HideWaitToStartPanel();
+                GameInterfaceManager.Instance.HideAnnouncementPanel();
 
                 InitializePlayers();
 
@@ -116,9 +120,78 @@ public class GameSessionManager : MonoBehaviour
         var GameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / PLAYER_COUNT;
         GameInterfaceManager.Instance.UpdateInterface(GameTurn);
 
+        CheckWinner();
+
         if (Input.GetKey(KeyCode.O))
         {
             MainCameraManager.Instance.ForceOverview();
+        }
+    }
+
+    private void CheckWinner()
+    {
+        if (turnNumber / PLAYER_COUNT > MAX_TURN_COUNT)
+        {
+            state = State.Ended;
+
+            var allPlayers = PlayerListManager.Instance.GetAllPlayers();
+            var highScoresList = GameInterfaceManager.Instance.GetHighScoresList();
+
+            var scores = new Dictionary<GameObject, int>();
+
+            foreach (var player in allPlayers)
+            {
+                scores.Add(player, 0);
+            }
+
+            foreach (var (orbType, highScoreList) in highScoresList.Select(x => (x.Key, x.Value)))
+            {
+                var typeWinner = highScoreList.GetPlayerList();
+
+                if (
+                    typeWinner.Count > 1 // More than 2 players have it
+                    ||
+                    typeWinner[0] == null // No player control it
+                   )
+                {
+                    continue;
+                }
+
+                scores[typeWinner[0]] += 1;
+            }
+
+            GameObject winner = null;
+            var highScore = 0;
+
+            foreach (var (player, score) in scores.Select(x => (x.Key, x.Value)))
+            {
+                if (score > highScore)
+                {
+                    winner = player;
+                    highScore = score;
+                }
+                else if (score == highScore) // Resolve when more than one player have the same number of biomes controlled
+                {
+                    winner = null;
+                }
+            }
+
+            if (winner == null)
+            {
+                GameInterfaceManager.Instance.ShowAnnouncementPanel("NO WINNER");
+                MainCameraManager.Instance.ZoomToOverview();
+            }
+            else
+            {
+                GameInterfaceManager.Instance.ShowAnnouncementPanel("WINNER");
+                MainCameraManager.Instance.ZoomToTarget(winner.transform.position);
+            }
+
+            // Clear the remaining interface
+            // TODO Isolate clear functionality
+            DiceRoller.Instance.Clear();
+            GameInterfaceManager.Instance.ClearCurrentPlayer();
+            GameInterfaceManager.Instance.UpdateTurnCounter(turnNumber / PLAYER_COUNT - 1);
         }
     }
 
