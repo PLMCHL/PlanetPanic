@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainCameraManager : MonoBehaviour
 {
     private Vector3 ZOOM_IN_DISTANCE = new Vector3(0, 0, -1);
+    private float ZOOM_IN_ORTHOGRAPHIC_SIZE = 2;
+    private float SPEED = 5;
 
     private static MainCameraManager instance;
     public static MainCameraManager Instance
@@ -21,21 +20,54 @@ public class MainCameraManager : MonoBehaviour
     }
 
     private Vector3 overviewPosition;
-    
+    private float overviewOrthographicSize;
+
+    private Vector3 targetPosition;
+    private float targetOrthographicSize;
+
     void Start()
     {
         overviewPosition = this.transform.position;
+        overviewOrthographicSize = this.GetComponent<Camera>().orthographicSize;
+    }
+
+    void Update()
+    {
+        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED * Time.deltaTime);
+        this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
+
+        var newPosition = MoveTowards(this.transform.position, targetPosition, SPEED * Time.deltaTime);
+        this.transform.position = newPosition;
     }
 
     public void ZoomOut()
     {
-        this.transform.position = overviewPosition;
-        this.GetComponent<Camera>().orthographicSize = 5;
+        this.targetPosition = overviewPosition;
+        this.targetOrthographicSize = overviewOrthographicSize;
+        Update();
     }
 
     public void ZoomTo(Vector3 position)
     {
-        this.transform.position = position + ZOOM_IN_DISTANCE;
-        this.GetComponent<Camera>().orthographicSize = 2;
+        this.targetPosition = position + ZOOM_IN_DISTANCE;
+        this.targetOrthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
+        Update();
+    }
+
+    public void ForceTo(Vector3 position)
+    {
+        this.targetPosition = position + ZOOM_IN_DISTANCE;
+        this.targetOrthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
+
+        this.GetComponent<Camera>().orthographicSize = ZOOM_IN_ORTHOGRAPHIC_SIZE;
+        this.transform.position = targetPosition;
+    }
+
+    private Vector3 MoveTowards(Vector3 current, Vector3 target, float speed)
+    {
+        var newX = Mathf.MoveTowards(current.x, target.x, SPEED * Time.deltaTime);
+        var newY = Mathf.MoveTowards(current.y, target.y, SPEED * Time.deltaTime);
+        var newZ = Mathf.MoveTowards(current.z, target.z, SPEED * Time.deltaTime);
+        return new Vector3(newX, newY, newZ);
     }
 }

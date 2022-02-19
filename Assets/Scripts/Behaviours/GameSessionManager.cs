@@ -54,8 +54,6 @@ public class GameSessionManager : MonoBehaviour
         }
         else if (state == State.Moving)
         {
-            var completed = MoveCurrentPlayer();
-
             // If there are no movements left, stop the player and wait to end turn
             if (movementsLeft == 0)
             {
@@ -69,6 +67,10 @@ public class GameSessionManager : MonoBehaviour
                 // Zoom out to overview
                 MainCameraManager.Instance.ZoomOut();
                 state = State.Waiting;
+            }
+            else
+            {
+                MoveCurrentPlayer();
             }
         }
         else if (state == State.Rolling)
@@ -133,7 +135,7 @@ public class GameSessionManager : MonoBehaviour
         currentPlayer.transform.position = MapManager.Instance.DirectionMap.CellToWorld(CubeCoordUtils.CubeToUnityCell(newPos));
 
         // Camera follow player
-        MainCameraManager.Instance.ZoomTo(currentPlayer.transform.position);
+        MainCameraManager.Instance.ForceTo(currentPlayer.transform.position);
 
         movementsLeft--;
         DiceRoller.Instance.SetValue(movementsLeft);
