@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class GameSessionManager : MonoBehaviour
 {
-    private const int PLAYER_COUNT = 2;
     private const int MAX_TURN_COUNT = 20;
    
+    private int playerCount = 0;
+
     private int playerTurnsCount = 0;
     private int movementsLeft = 0;
 
@@ -35,11 +36,34 @@ public class GameSessionManager : MonoBehaviour
         if (state == State.WaitToStart)
         {
             // Start game
-            if (Input.GetKeyDown(KeyCode.Space))
+            var key2 = Input.GetKeyDown(KeyCode.Alpha2);
+            var key3 = Input.GetKeyDown(KeyCode.Alpha3);
+            var key4 = Input.GetKeyDown(KeyCode.Alpha4);
+            var key5 = Input.GetKeyDown(KeyCode.Alpha5);
+
+            if (key2 || key3 || key4 || key5)
             {
                 GameInterfaceManager.Instance.HideAnnouncementPanel();
 
-                InitializePlayers();
+                // TODO this transformation is pretty ugly
+                if (key2)
+                {
+                    playerCount = 2;
+                }
+                else if (key3)
+                {
+                    playerCount = 3;
+                }
+                else if (key4)
+                {
+                    playerCount = 4;
+                }
+                else if (key5)
+                {
+                    playerCount = 5;
+                }
+
+                InitializePlayers(playerCount);
 
                 DiceRoller.Instance.StartRoll();
                 MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
@@ -117,7 +141,7 @@ public class GameSessionManager : MonoBehaviour
             }
         }
 
-        var gameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / PLAYER_COUNT;
+        var gameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / playerCount;
         GameInterfaceManager.Instance.UpdateInterface(gameTurn);
 
         CheckWinner();
@@ -130,7 +154,12 @@ public class GameSessionManager : MonoBehaviour
 
     private void CheckWinner()
     {
-        if (playerTurnsCount / PLAYER_COUNT > MAX_TURN_COUNT)
+        if (playerCount == 0)
+        {
+            return;
+        }
+
+        if (playerTurnsCount / playerCount > MAX_TURN_COUNT)
         {
             state = State.Ended;
 
@@ -191,7 +220,7 @@ public class GameSessionManager : MonoBehaviour
             // TODO Isolate clear functionality
             DiceRoller.Instance.Clear();
             GameInterfaceManager.Instance.ClearCurrentPlayer();
-            GameInterfaceManager.Instance.UpdateTurnCounter(playerTurnsCount / PLAYER_COUNT - 1);
+            GameInterfaceManager.Instance.UpdateTurnCounter(playerTurnsCount / playerCount - 1);
         }
     }
 
@@ -237,9 +266,9 @@ public class GameSessionManager : MonoBehaviour
         return true;
     }
 
-    private void InitializePlayers()
+    private void InitializePlayers(int playerCount)
     {
-        PlayerListManager.Instance.Initialize(PLAYER_COUNT, MapManager.START_POSITION);
+        PlayerListManager.Instance.Initialize(playerCount, MapManager.START_POSITION);
         PlayerListManager.Instance.CurrentPlayerIndex = 0;
 
         GameInterfaceManager.Instance.Initialize();
