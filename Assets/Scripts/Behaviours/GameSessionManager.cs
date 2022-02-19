@@ -39,9 +39,8 @@ public class GameSessionManager : MonoBehaviour
             var key2 = Input.GetKeyDown(KeyCode.Alpha2);
             var key3 = Input.GetKeyDown(KeyCode.Alpha3);
             var key4 = Input.GetKeyDown(KeyCode.Alpha4);
-            var key5 = Input.GetKeyDown(KeyCode.Alpha5);
 
-            if (key2 || key3 || key4 || key5)
+            if (key2 || key3 || key4)
             {
                 GameInterfaceManager.Instance.HideAnnouncementPanel();
 
@@ -57,10 +56,6 @@ public class GameSessionManager : MonoBehaviour
                 else if (key4)
                 {
                     playerCount = 4;
-                }
-                else if (key5)
-                {
-                    playerCount = 5;
                 }
 
                 InitializePlayers(playerCount);
