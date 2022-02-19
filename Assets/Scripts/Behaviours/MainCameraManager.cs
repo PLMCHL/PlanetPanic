@@ -33,7 +33,7 @@ public class MainCameraManager : MonoBehaviour
 
     void Update()
     {
-        var newPosition = Vector3Utils.MoveTowards(this.transform.position, targetPosition, SPEED);
+        var newPosition = Vector3.MoveTowards(this.transform.position, targetPosition, SPEED);
         this.transform.position = newPosition;
 
         var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, targetOrthographicSize, SPEED);
@@ -42,7 +42,7 @@ public class MainCameraManager : MonoBehaviour
 
     public void ForceOverview()
     {
-        var newPosition = Vector3Utils.MoveTowards(this.transform.position, overviewPosition, 2 * SPEED);
+        var newPosition = Vector3.MoveTowards(this.transform.position, overviewPosition, 2 * SPEED);
         this.transform.position = newPosition;
 
         var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, overviewOrthographicSize, 2 * SPEED);
