@@ -123,7 +123,7 @@ public class GameInterfaceManager : MonoBehaviour
             playerPanel.transform.SetParent(playersPanel, false);
             playerPannelList.Add(player, playerPanel);
 
-            // Set Panel avatar iamge
+            // Set Panel avatar image
             var avatarImage = playerPanel.transform.Find("PlayerImage").GetComponent<Image>();
             avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;
         }

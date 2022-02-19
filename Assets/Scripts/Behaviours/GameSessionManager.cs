@@ -167,7 +167,7 @@ public class GameSessionManager : MonoBehaviour
     private void InitializePlayers()
     {
         PlayerListManager.Instance.Initialize(PLAYER_COUNT, MapManager.START_POSITION);
-        PlayerListManager.Instance.SetCurrentPlayerIndex(0);
+        PlayerListManager.Instance.CurrentPlayerIndex = 0;
 
         GameInterfaceManager.Instance.Initialize();
     }
