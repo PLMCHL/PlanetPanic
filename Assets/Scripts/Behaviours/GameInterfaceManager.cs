@@ -1,4 +1,3 @@
-using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,14 +27,34 @@ public class GameInterfaceManager : MonoBehaviour
 
     public void UpdateInterface(int turnNumber)
     {
-        // Update turn number
-        var turnValueObj = this.transform.Find("TurnPanel/TurnValue").GetComponent<Text>();
-        turnValueObj.text = turnNumber.ToString();
+        UpdateTurnCounter(turnNumber);
 
         // Update current player sprite
         currentPlayerImage.sprite = PlayerListManager.Instance.GetCurrentPlayer().GetComponent<SpriteRenderer>().sprite;
 
-        // Update scores
+        // Update player planel
+        foreach (var (player, panel) in playerPannelList.Select(x => (x.Key, x.Value)))
+        {
+            UpdatePlayerPanelScore(panel, player, "IceScoreText", OrbTypes.Ice);
+            UpdatePlayerPanelScore(panel, player, "MudScoreText", OrbTypes.Mud);
+            UpdatePlayerPanelScore(panel, player, "ForestScoreText", OrbTypes.Forest);
+            UpdatePlayerPanelScore(panel, player, "PoisonScoreText", OrbTypes.Poison);
+            UpdatePlayerPanelScore(panel, player, "SandScoreText", OrbTypes.Sand);
+        }
+
+        // Update high scores
+        var highScores = GetHighScoresList();
+
+        UpdateResourcePanelScore(highScores, "IceOwnerIcon", OrbTypes.Ice);
+        UpdateResourcePanelScore(highScores, "MudOwnerIcon", OrbTypes.Mud);
+        UpdateResourcePanelScore(highScores, "ForestOwnerIcon", OrbTypes.Forest);
+        UpdateResourcePanelScore(highScores, "PoisonOwnerIcon", OrbTypes.Poison);
+        UpdateResourcePanelScore(highScores, "SandOwnerIcon", OrbTypes.Sand);
+    }
+
+    // TODO move to a better space
+    public Dictionary<OrbTypes, HighScoreList> GetHighScoresList()
+    {
         var highScores = new Dictionary<OrbTypes, HighScoreList>();
         highScores.Add(OrbTypes.Ice, new HighScoreList(0, null));
         highScores.Add(OrbTypes.Mud, new HighScoreList(0, null));
@@ -46,12 +65,6 @@ public class GameInterfaceManager : MonoBehaviour
         // Update orb scores
         foreach (var (player, panel) in playerPannelList.Select(x => (x.Key, x.Value)))
         {
-            UpdatePlayerPanelScore(panel, player, "IceScoreText", OrbTypes.Ice);
-            UpdatePlayerPanelScore(panel, player, "MudScoreText", OrbTypes.Mud);
-            UpdatePlayerPanelScore(panel, player, "ForestScoreText", OrbTypes.Forest);
-            UpdatePlayerPanelScore(panel, player, "PoisonScoreText", OrbTypes.Poison);
-            UpdatePlayerPanelScore(panel, player, "SandScoreText", OrbTypes.Sand);
-
             HighScoreList highScoreList;
 
             foreach (OrbTypes orbType in Enum.GetValues(typeof(OrbTypes)))
@@ -73,11 +86,13 @@ public class GameInterfaceManager : MonoBehaviour
             }
         }
 
-        UpdateResourcePanelScore(highScores, "IceOwnerIcon", OrbTypes.Ice);
-        UpdateResourcePanelScore(highScores, "MudOwnerIcon", OrbTypes.Mud);
-        UpdateResourcePanelScore(highScores, "ForestOwnerIcon", OrbTypes.Forest);
-        UpdateResourcePanelScore(highScores, "PoisonOwnerIcon", OrbTypes.Poison);
-        UpdateResourcePanelScore(highScores, "SandOwnerIcon", OrbTypes.Sand);
+        return highScores;
+    }
+
+    public void UpdateTurnCounter(int turnNumber)
+    {
+        var turnValueObj = this.transform.Find("TurnPanel/TurnValue").GetComponent<Text>();
+        turnValueObj.text = turnNumber.ToString();
     }
 
     private void UpdatePlayerPanelScore(GameObject panel, GameObject player, string id, OrbTypes type)
@@ -117,16 +132,29 @@ public class GameInterfaceManager : MonoBehaviour
             playerPanel.transform.SetParent(playersPanel, false);
             playerPannelList.Add(player, playerPanel);
 
-            // Set Panel avatar iamge
+            // Set Panel avatar image
             var avatarImage = playerPanel.transform.Find("PlayerImage").GetComponent<Image>();
             avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;
         }
     }
 
-    public void HideWaitToStartPanel()
+    public void ShowAnnouncementPanel(String text)
     {
-        var waitToStartPanelCanvasGroup = this.transform.Find("WaitToStartPanel").GetComponent<CanvasGroup>();
-        waitToStartPanelCanvasGroup.alpha = 0;
-        waitToStartPanelCanvasGroup.interactable = false;
+        var announcementPanelCanvasGroup = this.transform.Find("AnnouncementPanel").GetComponent<CanvasGroup>();
+        announcementPanelCanvasGroup.alpha = 1;
+
+        var a = this.transform.Find("AnnouncementPanel/AnnouncementText").GetComponent<Text>();
+        a.text = text;
+    }
+
+    public void HideAnnouncementPanel()
+    {
+        var announcementPanelCanvasGroup = this.transform.Find("AnnouncementPanel").GetComponent<CanvasGroup>();
+        announcementPanelCanvasGroup.alpha = 0;
+    }
+
+    public void ClearCurrentPlayer()
+    {
+        currentPlayerImage.sprite = alienUnknownImage;
     }
 }
