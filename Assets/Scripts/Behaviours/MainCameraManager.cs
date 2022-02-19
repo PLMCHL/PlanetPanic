@@ -4,7 +4,7 @@ public class MainCameraManager : MonoBehaviour
 {
     private Vector3 ZOOM_IN_DISTANCE = new Vector3(0, 0, -1);
     private float ZOOM_IN_ORTHOGRAPHIC_SIZE = 2;
-    private float SPEED = 15;
+    private float SPEED = 10;
 
     private static MainCameraManager instance;
     public static MainCameraManager Instance
@@ -42,8 +42,11 @@ public class MainCameraManager : MonoBehaviour
 
     public void ForceOverview()
     {
-        this.transform.position = overviewPosition;
-        this.GetComponent<Camera>().orthographicSize = overviewOrthographicSize;
+        var newPosition = Vector3Utils.MoveTowards(this.transform.position, overviewPosition, 2 * SPEED);
+        this.transform.position = newPosition;
+
+        var newOrthographicSize = Mathf.MoveTowards(this.GetComponent<Camera>().orthographicSize, overviewOrthographicSize, 2 * SPEED);
+        this.GetComponent<Camera>().orthographicSize = newOrthographicSize;
     }
 
     public void ZoomToOverview()
