@@ -6,7 +6,7 @@ public class PlayerInfo : MonoBehaviour
     private static int LastUsedSpriteIndex;
     private static int LastUsedKeyCodeIndex;
 
-    private KeyCode[] KEY_CODES = { KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B };
+    private KeyCode[] KEY_CODES = { KeyCode.Z, KeyCode.M, KeyCode.A, KeyCode.L, KeyCode.Q };
     public List<Sprite> sprites;
 
     public Dictionary<OrbTypes, int> playerOrbScore;
