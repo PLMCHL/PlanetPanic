@@ -3,9 +3,14 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    public static int LastUsedIndex;
+    private static int LastUsedSpriteIndex;
+    private static int LastUsedKeyCodeIndex;
+
+    private KeyCode[] KEY_CODES = { KeyCode.Z, KeyCode.M, KeyCode.A, KeyCode.L, KeyCode.Q };
     public List<Sprite> sprites;
-    public Dictionary<OrbTypes, int> orbScores;
+
+    public Dictionary<OrbTypes, int> playerOrbScore;
+    private KeyCode playerKeyCode;
 
     private static bool initialized;
 
@@ -13,17 +18,22 @@ public class PlayerInfo : MonoBehaviour
     {
         if (!initialized)
         {
-            LastUsedIndex = Random.Range(0, sprites.Count);
+            LastUsedSpriteIndex = Random.Range(0, sprites.Count);
+            LastUsedKeyCodeIndex = 0;
             initialized = true;
         }
 
+        // Set player key
+        playerKeyCode = KEY_CODES[LastUsedKeyCodeIndex++];
+        LastUsedKeyCodeIndex = LastUsedKeyCodeIndex % KEY_CODES.Length;
+
         // Set player sprite
         var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = sprites[LastUsedIndex++];
-        LastUsedIndex = LastUsedIndex % sprites.Count;
+        spriteRenderer.sprite = sprites[LastUsedSpriteIndex++];
+        LastUsedSpriteIndex = LastUsedSpriteIndex % sprites.Count;
 
         // Set player scores
-        orbScores = new Dictionary<OrbTypes, int> {
+        playerOrbScore = new Dictionary<OrbTypes, int> {
             [OrbTypes.Ice] = 0,
             [OrbTypes.Mud] = 0,
             [OrbTypes.Forest] = 0,
@@ -34,6 +44,11 @@ public class PlayerInfo : MonoBehaviour
 
     public void AddScore(OrbTypes type, int score)
     {
-        orbScores[type] += score;
+        playerOrbScore[type] += score;
+    }
+
+    public KeyCode GetPlayerKeyCode()
+    {
+        return playerKeyCode;
     }
 }

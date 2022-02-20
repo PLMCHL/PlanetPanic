@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class GameSessionManager : MonoBehaviour
 {
-    private const int PLAYER_COUNT = 2;
     private const int MAX_TURN_COUNT = 20;
    
-    private int turnNumber = 0;
+    private int playerCount = 0;
+
+    private int playerTurnsCount = 0;
     private int movementsLeft = 0;
 
     public State state { get; private set; }
@@ -26,9 +27,6 @@ public class GameSessionManager : MonoBehaviour
     {
         Random.InitState((int)System.DateTime.Now.Ticks);
 
-        InitializePlayers();
-        InitializeGameInterface();
-
         MainCameraManager.Instance.ZoomToOverview();
         state = State.WaitToStart;
     }
@@ -38,9 +36,29 @@ public class GameSessionManager : MonoBehaviour
         if (state == State.WaitToStart)
         {
             // Start game
-            if (Input.GetKeyDown(KeyCode.Space))
+            var key2 = Input.GetKeyDown(KeyCode.Alpha2);
+            var key3 = Input.GetKeyDown(KeyCode.Alpha3);
+            var key4 = Input.GetKeyDown(KeyCode.Alpha4);
+
+            if (key2 || key3 || key4)
             {
                 GameInterfaceManager.Instance.HideAnnouncementPanel();
+
+                // TODO this transformation is pretty ugly
+                if (key2)
+                {
+                    playerCount = 2;
+                }
+                else if (key3)
+                {
+                    playerCount = 3;
+                }
+                else if (key4)
+                {
+                    playerCount = 4;
+                }
+
+                InitializePlayers(playerCount);
 
                 DiceRoller.Instance.StartRoll();
                 MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
@@ -50,7 +68,7 @@ public class GameSessionManager : MonoBehaviour
         else if (state == State.DirectionSelect)
         {
             // Select direction
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (IsCurrentPlayerKeyPressed())
             {
                 state = State.Moving;
             }
@@ -93,7 +111,7 @@ public class GameSessionManager : MonoBehaviour
         else if (state == State.Rolling)
         {
             // When pressed use selection and advance
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (IsCurrentPlayerKeyPressed())
             {
                 var diceValue = DiceRoller.Instance.GetValue();
 
@@ -104,10 +122,10 @@ public class GameSessionManager : MonoBehaviour
         }
         else if (state == State.Waiting)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (IsCurrentPlayerKeyPressed())
             {
                 // End turn, Switch User
-                turnNumber++;
+                playerTurnsCount++;
                 PlayerListManager.Instance.EndPlayerTurn();
 
                 DiceRoller.Instance.StartRoll();
@@ -118,7 +136,8 @@ public class GameSessionManager : MonoBehaviour
             }
         }
 
-        GameInterfaceManager.Instance.UpdateInterface(turnNumber/PLAYER_COUNT);
+        var gameTurn = playerTurnsCount == 0 ? 0 : playerTurnsCount / playerCount;
+        GameInterfaceManager.Instance.UpdateInterface(gameTurn);
 
         CheckWinner();
 
@@ -128,9 +147,21 @@ public class GameSessionManager : MonoBehaviour
         }
     }
 
+    private bool IsCurrentPlayerKeyPressed()
+    {
+        var currentPlayer = PlayerListManager.Instance.GetCurrentPlayer();
+        var currentPlayerKeyCode = currentPlayer.GetComponent<PlayerInfo>().GetPlayerKeyCode();
+        return Input.GetKeyDown(currentPlayerKeyCode);
+    }
+
     private void CheckWinner()
     {
-        if (turnNumber / PLAYER_COUNT > MAX_TURN_COUNT)
+        if (playerCount == 0)
+        {
+            return;
+        }
+
+        if (playerTurnsCount / playerCount > MAX_TURN_COUNT)
         {
             state = State.Ended;
 
@@ -191,7 +222,7 @@ public class GameSessionManager : MonoBehaviour
             // TODO Isolate clear functionality
             DiceRoller.Instance.Clear();
             GameInterfaceManager.Instance.ClearCurrentPlayer();
-            GameInterfaceManager.Instance.UpdateTurnCounter(turnNumber / PLAYER_COUNT - 1);
+            GameInterfaceManager.Instance.UpdateTurnCounter(playerTurnsCount / playerCount - 1);
         }
     }
 
@@ -237,14 +268,11 @@ public class GameSessionManager : MonoBehaviour
         return true;
     }
 
-    private void InitializePlayers()
+    private void InitializePlayers(int playerCount)
     {
-        PlayerListManager.Instance.Initialize(PLAYER_COUNT, MapManager.START_POSITION);
-        PlayerListManager.Instance.SetCurrentPlayerIndex(0);
-    }
+        PlayerListManager.Instance.Initialize(playerCount, MapManager.START_POSITION);
+        PlayerListManager.Instance.CurrentPlayerIndex = 0;
 
-    private void InitializeGameInterface()
-    {
         GameInterfaceManager.Instance.Initialize();
     }
 }
