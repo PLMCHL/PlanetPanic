@@ -150,6 +150,11 @@ public class GameInterfaceManager : MonoBehaviour
             // Set Panel avatar image
             var avatarImage = playerPanel.transform.Find("PlayerImage").GetComponent<Image>();
             avatarImage.sprite = player.GetComponent<SpriteRenderer>().sprite;
+
+            // Set button value
+            var playerKeyCode = player.GetComponent<PlayerInfo>().GetPlayerKeyCode();
+            var playerKeyText = playerPanel.transform.Find("PlayerKeyPanel/PlayerKeyText").GetComponent<Text>();
+            playerKeyText.text = playerKeyCode.ToString();
         }
 
         // Adjust size of panel
