@@ -11,11 +11,11 @@ Your crew is stranded on a strange new planet. Compete to control each biome and
 - The player with the most biomes after 20 turns wins.
 
 ## Controls
-- Press number from '2' to '4' to start a game
+- Press number from `2` to `4` to start a game
 - Press player's key to continue on your turn (found near player's score)
 - Press `left arrow` or `right arrow` to select a direction when required.
-- Press 'H' for help
-- Press 'O' for map overview
+- Press `H` for help
+- Press `O` for map overview
 
 ## Continuous Deployment
 - Validate unityci docker is updated before updating Unity version
