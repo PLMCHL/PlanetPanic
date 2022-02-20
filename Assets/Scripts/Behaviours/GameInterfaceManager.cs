@@ -84,7 +84,7 @@ public class GameInterfaceManager : MonoBehaviour
 
             foreach (OrbTypes orbType in Enum.GetValues(typeof(OrbTypes)))
             {
-                var playerScore = player.GetComponent<PlayerInfo>().orbScores[orbType];
+                var playerScore = player.GetComponent<PlayerInfo>().playerOrbScore[orbType];
 
                 highScores.TryGetValue(orbType, out highScoreList);
 
@@ -113,7 +113,7 @@ public class GameInterfaceManager : MonoBehaviour
     private void UpdatePlayerPanelScore(GameObject panel, GameObject player, string id, OrbTypes type)
     {
         var mudText = panel.transform.Find("OrbScoreContainer/" + id).GetComponent<Text>();
-        mudText.text = player.GetComponent<PlayerInfo>().orbScores[type].ToString();
+        mudText.text = player.GetComponent<PlayerInfo>().playerOrbScore[type].ToString();
     }
 
     private void UpdateResourcePanelScore(Dictionary<OrbTypes, HighScoreList> highScores, string id, OrbTypes type)

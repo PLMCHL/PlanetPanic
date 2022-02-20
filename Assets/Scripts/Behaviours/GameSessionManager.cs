@@ -68,7 +68,7 @@ public class GameSessionManager : MonoBehaviour
         else if (state == State.DirectionSelect)
         {
             // Select direction
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (IsCurrentPlayerKeyPressed())
             {
                 state = State.Moving;
             }
@@ -111,7 +111,7 @@ public class GameSessionManager : MonoBehaviour
         else if (state == State.Rolling)
         {
             // When pressed use selection and advance
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (IsCurrentPlayerKeyPressed())
             {
                 var diceValue = DiceRoller.Instance.GetValue();
 
@@ -122,7 +122,7 @@ public class GameSessionManager : MonoBehaviour
         }
         else if (state == State.Waiting)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (IsCurrentPlayerKeyPressed())
             {
                 // End turn, Switch User
                 playerTurnsCount++;
@@ -145,6 +145,13 @@ public class GameSessionManager : MonoBehaviour
         {
             MainCameraManager.Instance.ForceOverview();
         }
+    }
+
+    private bool IsCurrentPlayerKeyPressed()
+    {
+        var currentPlayer = PlayerListManager.Instance.GetCurrentPlayer();
+        var currentPlayerKeyCode = currentPlayer.GetComponent<PlayerInfo>().GetPlayerKeyCode();
+        return Input.GetKeyDown(currentPlayerKeyCode);
     }
 
     private void CheckWinner()
