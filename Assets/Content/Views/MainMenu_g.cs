@@ -647,7 +647,7 @@ namespace Delight
                     _mainMenuPlayerSelectWindow = new Template(RegionTemplates.Region);
 #if UNITY_EDITOR
                     _mainMenuPlayerSelectWindow.Name = "MainMenuPlayerSelectWindow";
-                    _mainMenuPlayerSelectWindow.LineNumber = 16;
+                    _mainMenuPlayerSelectWindow.LineNumber = 17;
                     _mainMenuPlayerSelectWindow.LinePosition = 6;
 #endif
                 }
@@ -669,7 +669,7 @@ namespace Delight
                     _mainMenuGroup2 = new Template(GroupTemplates.Group);
 #if UNITY_EDITOR
                     _mainMenuGroup2.Name = "MainMenuGroup2";
-                    _mainMenuGroup2.LineNumber = 17;
+                    _mainMenuGroup2.LineNumber = 18;
                     _mainMenuGroup2.LinePosition = 8;
 #endif
                     Delight.Group.SpacingProperty.SetDefault(_mainMenuGroup2, new ElementSize(10f, ElementSizeUnit.Pixels));
@@ -692,7 +692,7 @@ namespace Delight
                     _mainMenuButton4 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton4.Name = "MainMenuButton4";
-                    _mainMenuButton4.LineNumber = 18;
+                    _mainMenuButton4.LineNumber = 19;
                     _mainMenuButton4.LinePosition = 10;
 #endif
                     Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton4, Assets.Sprites["MainMenuDemoButton"]);
@@ -751,7 +751,7 @@ namespace Delight
                     _mainMenuButton5 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton5.Name = "MainMenuButton5";
-                    _mainMenuButton5.LineNumber = 19;
+                    _mainMenuButton5.LineNumber = 20;
                     _mainMenuButton5.LinePosition = 10;
 #endif
                     Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton5, Assets.Sprites["MainMenuDemoButton"]);
@@ -810,7 +810,7 @@ namespace Delight
                     _mainMenuOptionsWindow = new Template(RegionTemplates.Region);
 #if UNITY_EDITOR
                     _mainMenuOptionsWindow.Name = "MainMenuOptionsWindow";
-                    _mainMenuOptionsWindow.LineNumber = 24;
+                    _mainMenuOptionsWindow.LineNumber = 25;
                     _mainMenuOptionsWindow.LinePosition = 6;
 #endif
                 }
@@ -832,7 +832,7 @@ namespace Delight
                     _mainMenuButton6 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton6.Name = "MainMenuButton6";
-                    _mainMenuButton6.LineNumber = 25;
+                    _mainMenuButton6.LineNumber = 26;
                     _mainMenuButton6.LinePosition = 8;
 #endif
                     Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton6, Assets.Sprites["MainMenuDemoButton"]);

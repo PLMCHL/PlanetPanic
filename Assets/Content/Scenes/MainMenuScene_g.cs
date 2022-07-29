@@ -390,7 +390,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1PlayerSelectWindow = new Template(MainMenuTemplates.MainMenuPlayerSelectWindow);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1PlayerSelectWindow.Name = "MainMenuSceneMainMenu1PlayerSelectWindow";
-                    _mainMenuSceneMainMenu1PlayerSelectWindow.LineNumber = 16;
+                    _mainMenuSceneMainMenu1PlayerSelectWindow.LineNumber = 17;
                     _mainMenuSceneMainMenu1PlayerSelectWindow.LinePosition = 6;
 #endif
                 }
@@ -412,7 +412,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Group2 = new Template(MainMenuTemplates.MainMenuGroup2);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Group2.Name = "MainMenuSceneMainMenu1Group2";
-                    _mainMenuSceneMainMenu1Group2.LineNumber = 17;
+                    _mainMenuSceneMainMenu1Group2.LineNumber = 18;
                     _mainMenuSceneMainMenu1Group2.LinePosition = 8;
 #endif
                 }
@@ -434,7 +434,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button4 = new Template(MainMenuTemplates.MainMenuButton4);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button4.Name = "MainMenuSceneMainMenu1Button4";
-                    _mainMenuSceneMainMenu1Button4.LineNumber = 18;
+                    _mainMenuSceneMainMenu1Button4.LineNumber = 19;
                     _mainMenuSceneMainMenu1Button4.LinePosition = 10;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button4, MainMenuSceneMainMenu1Button4Label);
@@ -479,7 +479,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button5 = new Template(MainMenuTemplates.MainMenuButton5);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button5.Name = "MainMenuSceneMainMenu1Button5";
-                    _mainMenuSceneMainMenu1Button5.LineNumber = 19;
+                    _mainMenuSceneMainMenu1Button5.LineNumber = 20;
                     _mainMenuSceneMainMenu1Button5.LinePosition = 10;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button5, MainMenuSceneMainMenu1Button5Label);
@@ -524,7 +524,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1OptionsWindow = new Template(MainMenuTemplates.MainMenuOptionsWindow);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1OptionsWindow.Name = "MainMenuSceneMainMenu1OptionsWindow";
-                    _mainMenuSceneMainMenu1OptionsWindow.LineNumber = 24;
+                    _mainMenuSceneMainMenu1OptionsWindow.LineNumber = 25;
                     _mainMenuSceneMainMenu1OptionsWindow.LinePosition = 6;
 #endif
                 }
@@ -546,7 +546,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button6 = new Template(MainMenuTemplates.MainMenuButton6);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button6.Name = "MainMenuSceneMainMenu1Button6";
-                    _mainMenuSceneMainMenu1Button6.LineNumber = 25;
+                    _mainMenuSceneMainMenu1Button6.LineNumber = 26;
                     _mainMenuSceneMainMenu1Button6.LinePosition = 8;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button6, MainMenuSceneMainMenu1Button6Label);

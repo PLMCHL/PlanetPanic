@@ -13,6 +13,7 @@
     </Region>
 
     <!-- Second view, Player select -->
+    <!-- TODO: add selection for: player count, turn count, player colors -->
     <Region Id="PlayerSelectWindow" >
       <Group Spacing="10">
         <Button Style="StoneButton" Text="Start" Click="StartGame" />
