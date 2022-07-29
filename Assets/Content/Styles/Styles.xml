@@ -1,3 +1,9 @@
 <Styles>
-  <!-- Style File -->
+  <Button Style="StoneButton" BackgroundSprite="MainMenuDemoButton"
+            Pressed-BackgroundSprite="MainMenuDemoButtonPressed"
+            BackgroundColor="White" Highlighted-BackgroundColor="White"
+            Pressed-BackgroundColor="White" Width="218" Height="117"
+            FontSize="40" Font="AveriaSansLibre-Bold SDF" TextOffset="0,0,0,6"
+            StateAnimations="" FontColor="White" Highlighted-FontColor="White"
+            Pressed-FontColor="#cccccc" />
 </Styles>  

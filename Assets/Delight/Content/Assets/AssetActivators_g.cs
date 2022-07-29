@@ -15,14 +15,15 @@ namespace Delight
         static Assets()
         {
             ViewActivators = new Dictionary<string, Func<View, View, string, Template, bool, View>>();
-            ViewActivators.Add("SceneObjectView", (x, y, z, w, a) => new SceneObjectView(x, y, z, w, a));
+            ViewActivators.Add("MainMenu", (x, y, z, w, a) => new MainMenu(x, y, z, w, a));
+            ViewActivators.Add("UIView", (x, y, z, w, a) => new UIView(x, y, z, w, a));
+            ViewActivators.Add("Group", (x, y, z, w, a) => new Group(x, y, z, w, a));
             ViewActivators.Add("Button", (x, y, z, w, a) => new Button(x, y, z, w, a));
+            ViewActivators.Add("SceneObjectView", (x, y, z, w, a) => new SceneObjectView(x, y, z, w, a));
             ViewActivators.Add("UIImageView", (x, y, z, w, a) => new UIImageView(x, y, z, w, a));
             ViewActivators.Add("Label", (x, y, z, w, a) => new Label(x, y, z, w, a));
             ViewActivators.Add("CanvasRendererView", (x, y, z, w, a) => new CanvasRendererView(x, y, z, w, a));
-            ViewActivators.Add("UIView", (x, y, z, w, a) => new UIView(x, y, z, w, a));
             ViewActivators.Add("CheckBox", (x, y, z, w, a) => new CheckBox(x, y, z, w, a));
-            ViewActivators.Add("Group", (x, y, z, w, a) => new Group(x, y, z, w, a));
             ViewActivators.Add("Image", (x, y, z, w, a) => new Image(x, y, z, w, a));
             ViewActivators.Add("Collection", (x, y, z, w, a) => new Collection(x, y, z, w, a));
             ViewActivators.Add("ComboBox", (x, y, z, w, a) => new ComboBox(x, y, z, w, a));
@@ -71,17 +72,19 @@ namespace Delight
             ViewActivators.Add("SliderExample", (x, y, z, w, a) => new SliderExample(x, y, z, w, a));
             ViewActivators.Add("TabPanelExample", (x, y, z, w, a) => new TabPanelExample(x, y, z, w, a));
             ViewActivators.Add("TestExample", (x, y, z, w, a) => new TestExample(x, y, z, w, a));
+            ViewActivators.Add("MainMenuScene", (x, y, z, w, a) => new MainMenuScene(x, y, z, w, a));
             ViewActivators.Add("MainMenuDemoScene", (x, y, z, w, a) => new MainMenuDemoScene(x, y, z, w, a));
 
             ViewTypes = new Dictionary<string, Type>();
-            ViewTypes.Add("SceneObjectView", typeof(SceneObjectView));
+            ViewTypes.Add("MainMenu", typeof(MainMenu));
+            ViewTypes.Add("UIView", typeof(UIView));
+            ViewTypes.Add("Group", typeof(Group));
             ViewTypes.Add("Button", typeof(Button));
+            ViewTypes.Add("SceneObjectView", typeof(SceneObjectView));
             ViewTypes.Add("UIImageView", typeof(UIImageView));
             ViewTypes.Add("Label", typeof(Label));
             ViewTypes.Add("CanvasRendererView", typeof(CanvasRendererView));
-            ViewTypes.Add("UIView", typeof(UIView));
             ViewTypes.Add("CheckBox", typeof(CheckBox));
-            ViewTypes.Add("Group", typeof(Group));
             ViewTypes.Add("Image", typeof(Image));
             ViewTypes.Add("Collection", typeof(Collection));
             ViewTypes.Add("ComboBox", typeof(ComboBox));
@@ -130,6 +133,7 @@ namespace Delight
             ViewTypes.Add("SliderExample", typeof(SliderExample));
             ViewTypes.Add("TabPanelExample", typeof(TabPanelExample));
             ViewTypes.Add("TestExample", typeof(TestExample));
+            ViewTypes.Add("MainMenuScene", typeof(MainMenuScene));
             ViewTypes.Add("MainMenuDemoScene", typeof(MainMenuDemoScene));
 
             AttachedPropertyActivators = new Dictionary<string, Func<View, string, AttachedProperty>>();

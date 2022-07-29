@@ -1,0 +1,29 @@
+<MainMenu xmlns="Delight" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Delight ../Delight.xsd">
+  <ViewSwitcher Id="SubmenuSwitcher">
+
+    <!-- first view, our main menu buttons -->
+    <Region Id="MainMenuWindow">
+      <Image Sprite="MainMenuDemoBg" Height="480" PreserveAspect="True" />
+      <Label Style="MainMenuDemoTitle" Text="Main Menu" Offset="0,0,0,210" />
+      <Group Spacing="10" Offset="0,25,0,0">
+        <Button Style="StoneButton" Text="Play" Click="Play" />
+        <Button Style="StoneButton" Text="Options" Click="ShowOptions" />
+        <Button Style="StoneButton" Text="Quit" Click="Quit" />
+      </Group>
+    </Region>
+
+    <!-- Second view, Player select -->
+    <Region Id="PlayerSelectWindow" >
+      <Group Spacing="10">
+        <Button Style="StoneButton" Text="Start" Click="StartGame" />
+        <Button Style="StoneButton" Text="Back" Click="NavigateToMainMenu" />
+      </Group>
+    </Region>
+
+    <!-- third view, Options select -->
+    <Region Id="OptionsWindow" >
+      <Button Style="StoneButton" Text="Back" Click="NavigateToMainMenu" />
+    </Region>
+
+  </ViewSwitcher>
+</MainMenu>
