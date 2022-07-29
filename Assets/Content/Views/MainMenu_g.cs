@@ -22,8 +22,6 @@ namespace Delight
             // constructing ViewSwitcher (SubmenuSwitcher)
             SubmenuSwitcher = new ViewSwitcher(this, this, "SubmenuSwitcher", SubmenuSwitcherTemplate);
             MainMenuWindow = new Region(this, SubmenuSwitcher.Content, "MainMenuWindow", MainMenuWindowTemplate);
-            Image1 = new Image(this, MainMenuWindow.Content, "Image1", Image1Template);
-            Label1 = new Label(this, MainMenuWindow.Content, "Label1", Label1Template);
             Group1 = new Group(this, MainMenuWindow.Content, "Group1", Group1Template);
             Button1 = new Button(this, Group1.Content, "Button1", Button1Template);
             Button1.Click.RegisterHandler(this, "Play");
@@ -31,15 +29,23 @@ namespace Delight
             Button2.Click.RegisterHandler(this, "ShowOptions");
             Button3 = new Button(this, Group1.Content, "Button3", Button3Template);
             Button3.Click.RegisterHandler(this, "Quit");
-            PlayerSelectWindow = new Region(this, SubmenuSwitcher.Content, "PlayerSelectWindow", PlayerSelectWindowTemplate);
-            Group2 = new Group(this, PlayerSelectWindow.Content, "Group2", Group2Template);
-            Button4 = new Button(this, Group2.Content, "Button4", Button4Template);
-            Button4.Click.RegisterHandler(this, "StartGame");
-            Button5 = new Button(this, Group2.Content, "Button5", Button5Template);
-            Button5.Click.RegisterHandler(this, "NavigateToMainMenu");
+            PlayWindow = new Region(this, SubmenuSwitcher.Content, "PlayWindow", PlayWindowTemplate);
+            Group2 = new Group(this, PlayWindow.Content, "Group2", Group2Template);
+            ToggleGroup1 = new ToggleGroup(this, Group2.Content, "ToggleGroup1", ToggleGroup1Template);
+            Label1 = new Label(this, ToggleGroup1.Content, "Label1", Label1Template);
+            Button4 = new Button(this, ToggleGroup1.Content, "Button4", Button4Template);
+            Button4.Click.RegisterHandler(() => @PlayerCount = 2);
+            Button5 = new Button(this, ToggleGroup1.Content, "Button5", Button5Template);
+            Button5.Click.RegisterHandler(() => @PlayerCount = 3);
+            Button6 = new Button(this, ToggleGroup1.Content, "Button6", Button6Template);
+            Button6.Click.RegisterHandler(() => @PlayerCount = 4);
+            Button7 = new Button(this, Group2.Content, "Button7", Button7Template);
+            Button7.Click.RegisterHandler(this, "StartGame");
+            Button8 = new Button(this, Group2.Content, "Button8", Button8Template);
+            Button8.Click.RegisterHandler(this, "NavigateToMainMenu");
             OptionsWindow = new Region(this, SubmenuSwitcher.Content, "OptionsWindow", OptionsWindowTemplate);
-            Button6 = new Button(this, OptionsWindow.Content, "Button6", Button6Template);
-            Button6.Click.RegisterHandler(this, "NavigateToMainMenu");
+            Button9 = new Button(this, OptionsWindow.Content, "Button9", Button9Template);
+            Button9.Click.RegisterHandler(this, "NavigateToMainMenu");
             this.AfterInitializeInternal();
         }
 
@@ -56,10 +62,6 @@ namespace Delight
             dependencyProperties.Add(SubmenuSwitcherTemplateProperty);
             dependencyProperties.Add(MainMenuWindowProperty);
             dependencyProperties.Add(MainMenuWindowTemplateProperty);
-            dependencyProperties.Add(Image1Property);
-            dependencyProperties.Add(Image1TemplateProperty);
-            dependencyProperties.Add(Label1Property);
-            dependencyProperties.Add(Label1TemplateProperty);
             dependencyProperties.Add(Group1Property);
             dependencyProperties.Add(Group1TemplateProperty);
             dependencyProperties.Add(Button1Property);
@@ -68,18 +70,28 @@ namespace Delight
             dependencyProperties.Add(Button2TemplateProperty);
             dependencyProperties.Add(Button3Property);
             dependencyProperties.Add(Button3TemplateProperty);
-            dependencyProperties.Add(PlayerSelectWindowProperty);
-            dependencyProperties.Add(PlayerSelectWindowTemplateProperty);
+            dependencyProperties.Add(PlayWindowProperty);
+            dependencyProperties.Add(PlayWindowTemplateProperty);
             dependencyProperties.Add(Group2Property);
             dependencyProperties.Add(Group2TemplateProperty);
+            dependencyProperties.Add(ToggleGroup1Property);
+            dependencyProperties.Add(ToggleGroup1TemplateProperty);
+            dependencyProperties.Add(Label1Property);
+            dependencyProperties.Add(Label1TemplateProperty);
             dependencyProperties.Add(Button4Property);
             dependencyProperties.Add(Button4TemplateProperty);
             dependencyProperties.Add(Button5Property);
             dependencyProperties.Add(Button5TemplateProperty);
-            dependencyProperties.Add(OptionsWindowProperty);
-            dependencyProperties.Add(OptionsWindowTemplateProperty);
             dependencyProperties.Add(Button6Property);
             dependencyProperties.Add(Button6TemplateProperty);
+            dependencyProperties.Add(Button7Property);
+            dependencyProperties.Add(Button7TemplateProperty);
+            dependencyProperties.Add(Button8Property);
+            dependencyProperties.Add(Button8TemplateProperty);
+            dependencyProperties.Add(OptionsWindowProperty);
+            dependencyProperties.Add(OptionsWindowTemplateProperty);
+            dependencyProperties.Add(Button9Property);
+            dependencyProperties.Add(Button9TemplateProperty);
         }
 
         #endregion
@@ -112,34 +124,6 @@ namespace Delight
         {
             get { return MainMenuWindowTemplateProperty.GetValue(this); }
             set { MainMenuWindowTemplateProperty.SetValue(this, value); }
-        }
-
-        public readonly static DependencyProperty<Image> Image1Property = new DependencyProperty<Image>("Image1");
-        public Image Image1
-        {
-            get { return Image1Property.GetValue(this); }
-            set { Image1Property.SetValue(this, value); }
-        }
-
-        public readonly static DependencyProperty<Template> Image1TemplateProperty = new DependencyProperty<Template>("Image1Template");
-        public Template Image1Template
-        {
-            get { return Image1TemplateProperty.GetValue(this); }
-            set { Image1TemplateProperty.SetValue(this, value); }
-        }
-
-        public readonly static DependencyProperty<Label> Label1Property = new DependencyProperty<Label>("Label1");
-        public Label Label1
-        {
-            get { return Label1Property.GetValue(this); }
-            set { Label1Property.SetValue(this, value); }
-        }
-
-        public readonly static DependencyProperty<Template> Label1TemplateProperty = new DependencyProperty<Template>("Label1Template");
-        public Template Label1Template
-        {
-            get { return Label1TemplateProperty.GetValue(this); }
-            set { Label1TemplateProperty.SetValue(this, value); }
         }
 
         public readonly static DependencyProperty<Group> Group1Property = new DependencyProperty<Group>("Group1");
@@ -198,18 +182,18 @@ namespace Delight
             set { Button3TemplateProperty.SetValue(this, value); }
         }
 
-        public readonly static DependencyProperty<Region> PlayerSelectWindowProperty = new DependencyProperty<Region>("PlayerSelectWindow");
-        public Region PlayerSelectWindow
+        public readonly static DependencyProperty<Region> PlayWindowProperty = new DependencyProperty<Region>("PlayWindow");
+        public Region PlayWindow
         {
-            get { return PlayerSelectWindowProperty.GetValue(this); }
-            set { PlayerSelectWindowProperty.SetValue(this, value); }
+            get { return PlayWindowProperty.GetValue(this); }
+            set { PlayWindowProperty.SetValue(this, value); }
         }
 
-        public readonly static DependencyProperty<Template> PlayerSelectWindowTemplateProperty = new DependencyProperty<Template>("PlayerSelectWindowTemplate");
-        public Template PlayerSelectWindowTemplate
+        public readonly static DependencyProperty<Template> PlayWindowTemplateProperty = new DependencyProperty<Template>("PlayWindowTemplate");
+        public Template PlayWindowTemplate
         {
-            get { return PlayerSelectWindowTemplateProperty.GetValue(this); }
-            set { PlayerSelectWindowTemplateProperty.SetValue(this, value); }
+            get { return PlayWindowTemplateProperty.GetValue(this); }
+            set { PlayWindowTemplateProperty.SetValue(this, value); }
         }
 
         public readonly static DependencyProperty<Group> Group2Property = new DependencyProperty<Group>("Group2");
@@ -224,6 +208,34 @@ namespace Delight
         {
             get { return Group2TemplateProperty.GetValue(this); }
             set { Group2TemplateProperty.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<ToggleGroup> ToggleGroup1Property = new DependencyProperty<ToggleGroup>("ToggleGroup1");
+        public ToggleGroup ToggleGroup1
+        {
+            get { return ToggleGroup1Property.GetValue(this); }
+            set { ToggleGroup1Property.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Template> ToggleGroup1TemplateProperty = new DependencyProperty<Template>("ToggleGroup1Template");
+        public Template ToggleGroup1Template
+        {
+            get { return ToggleGroup1TemplateProperty.GetValue(this); }
+            set { ToggleGroup1TemplateProperty.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Label> Label1Property = new DependencyProperty<Label>("Label1");
+        public Label Label1
+        {
+            get { return Label1Property.GetValue(this); }
+            set { Label1Property.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Template> Label1TemplateProperty = new DependencyProperty<Template>("Label1Template");
+        public Template Label1Template
+        {
+            get { return Label1TemplateProperty.GetValue(this); }
+            set { Label1TemplateProperty.SetValue(this, value); }
         }
 
         public readonly static DependencyProperty<Button> Button4Property = new DependencyProperty<Button>("Button4");
@@ -254,6 +266,48 @@ namespace Delight
             set { Button5TemplateProperty.SetValue(this, value); }
         }
 
+        public readonly static DependencyProperty<Button> Button6Property = new DependencyProperty<Button>("Button6");
+        public Button Button6
+        {
+            get { return Button6Property.GetValue(this); }
+            set { Button6Property.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Template> Button6TemplateProperty = new DependencyProperty<Template>("Button6Template");
+        public Template Button6Template
+        {
+            get { return Button6TemplateProperty.GetValue(this); }
+            set { Button6TemplateProperty.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Button> Button7Property = new DependencyProperty<Button>("Button7");
+        public Button Button7
+        {
+            get { return Button7Property.GetValue(this); }
+            set { Button7Property.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Template> Button7TemplateProperty = new DependencyProperty<Template>("Button7Template");
+        public Template Button7Template
+        {
+            get { return Button7TemplateProperty.GetValue(this); }
+            set { Button7TemplateProperty.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Button> Button8Property = new DependencyProperty<Button>("Button8");
+        public Button Button8
+        {
+            get { return Button8Property.GetValue(this); }
+            set { Button8Property.SetValue(this, value); }
+        }
+
+        public readonly static DependencyProperty<Template> Button8TemplateProperty = new DependencyProperty<Template>("Button8Template");
+        public Template Button8Template
+        {
+            get { return Button8TemplateProperty.GetValue(this); }
+            set { Button8TemplateProperty.SetValue(this, value); }
+        }
+
         public readonly static DependencyProperty<Region> OptionsWindowProperty = new DependencyProperty<Region>("OptionsWindow");
         public Region OptionsWindow
         {
@@ -268,18 +322,18 @@ namespace Delight
             set { OptionsWindowTemplateProperty.SetValue(this, value); }
         }
 
-        public readonly static DependencyProperty<Button> Button6Property = new DependencyProperty<Button>("Button6");
-        public Button Button6
+        public readonly static DependencyProperty<Button> Button9Property = new DependencyProperty<Button>("Button9");
+        public Button Button9
         {
-            get { return Button6Property.GetValue(this); }
-            set { Button6Property.SetValue(this, value); }
+            get { return Button9Property.GetValue(this); }
+            set { Button9Property.SetValue(this, value); }
         }
 
-        public readonly static DependencyProperty<Template> Button6TemplateProperty = new DependencyProperty<Template>("Button6Template");
-        public Template Button6Template
+        public readonly static DependencyProperty<Template> Button9TemplateProperty = new DependencyProperty<Template>("Button9Template");
+        public Template Button9Template
         {
-            get { return Button6TemplateProperty.GetValue(this); }
-            set { Button6TemplateProperty.SetValue(this, value); }
+            get { return Button9TemplateProperty.GetValue(this); }
+            set { Button9TemplateProperty.SetValue(this, value); }
         }
 
         #endregion
@@ -318,18 +372,21 @@ namespace Delight
 #endif
                     Delight.MainMenu.SubmenuSwitcherTemplateProperty.SetDefault(_mainMenu, MainMenuSubmenuSwitcher);
                     Delight.MainMenu.MainMenuWindowTemplateProperty.SetDefault(_mainMenu, MainMenuMainMenuWindow);
-                    Delight.MainMenu.Image1TemplateProperty.SetDefault(_mainMenu, MainMenuImage1);
-                    Delight.MainMenu.Label1TemplateProperty.SetDefault(_mainMenu, MainMenuLabel1);
                     Delight.MainMenu.Group1TemplateProperty.SetDefault(_mainMenu, MainMenuGroup1);
                     Delight.MainMenu.Button1TemplateProperty.SetDefault(_mainMenu, MainMenuButton1);
                     Delight.MainMenu.Button2TemplateProperty.SetDefault(_mainMenu, MainMenuButton2);
                     Delight.MainMenu.Button3TemplateProperty.SetDefault(_mainMenu, MainMenuButton3);
-                    Delight.MainMenu.PlayerSelectWindowTemplateProperty.SetDefault(_mainMenu, MainMenuPlayerSelectWindow);
+                    Delight.MainMenu.PlayWindowTemplateProperty.SetDefault(_mainMenu, MainMenuPlayWindow);
                     Delight.MainMenu.Group2TemplateProperty.SetDefault(_mainMenu, MainMenuGroup2);
+                    Delight.MainMenu.ToggleGroup1TemplateProperty.SetDefault(_mainMenu, MainMenuToggleGroup1);
+                    Delight.MainMenu.Label1TemplateProperty.SetDefault(_mainMenu, MainMenuLabel1);
                     Delight.MainMenu.Button4TemplateProperty.SetDefault(_mainMenu, MainMenuButton4);
                     Delight.MainMenu.Button5TemplateProperty.SetDefault(_mainMenu, MainMenuButton5);
-                    Delight.MainMenu.OptionsWindowTemplateProperty.SetDefault(_mainMenu, MainMenuOptionsWindow);
                     Delight.MainMenu.Button6TemplateProperty.SetDefault(_mainMenu, MainMenuButton6);
+                    Delight.MainMenu.Button7TemplateProperty.SetDefault(_mainMenu, MainMenuButton7);
+                    Delight.MainMenu.Button8TemplateProperty.SetDefault(_mainMenu, MainMenuButton8);
+                    Delight.MainMenu.OptionsWindowTemplateProperty.SetDefault(_mainMenu, MainMenuOptionsWindow);
+                    Delight.MainMenu.Button9TemplateProperty.SetDefault(_mainMenu, MainMenuButton9);
                 }
                 return _mainMenu;
             }
@@ -379,59 +436,6 @@ namespace Delight
             }
         }
 
-        private static Template _mainMenuImage1;
-        public static Template MainMenuImage1
-        {
-            get
-            {
-#if UNITY_EDITOR
-                if (_mainMenuImage1 == null || _mainMenuImage1.CurrentVersion != Template.Version)
-#else
-                if (_mainMenuImage1 == null)
-#endif
-                {
-                    _mainMenuImage1 = new Template(ImageTemplates.Image);
-#if UNITY_EDITOR
-                    _mainMenuImage1.Name = "MainMenuImage1";
-                    _mainMenuImage1.LineNumber = 6;
-                    _mainMenuImage1.LinePosition = 8;
-#endif
-                    Delight.Image.SpriteProperty.SetDefault(_mainMenuImage1, Assets.Sprites["MainMenuDemoBg"]);
-                    Delight.Image.HeightProperty.SetDefault(_mainMenuImage1, new ElementSize(480f, ElementSizeUnit.Pixels));
-                    Delight.Image.PreserveAspectProperty.SetDefault(_mainMenuImage1, true);
-                }
-                return _mainMenuImage1;
-            }
-        }
-
-        private static Template _mainMenuLabel1;
-        public static Template MainMenuLabel1
-        {
-            get
-            {
-#if UNITY_EDITOR
-                if (_mainMenuLabel1 == null || _mainMenuLabel1.CurrentVersion != Template.Version)
-#else
-                if (_mainMenuLabel1 == null)
-#endif
-                {
-                    _mainMenuLabel1 = new Template(LabelTemplates.Label);
-#if UNITY_EDITOR
-                    _mainMenuLabel1.Name = "MainMenuLabel1";
-                    _mainMenuLabel1.LineNumber = 7;
-                    _mainMenuLabel1.LinePosition = 8;
-#endif
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuLabel1, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuLabel1, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuLabel1, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.AutoSizeProperty.SetDefault(_mainMenuLabel1, Delight.AutoSize.Default);
-                    Delight.Label.TextProperty.SetDefault(_mainMenuLabel1, "Main Menu");
-                    Delight.Label.OffsetProperty.SetDefault(_mainMenuLabel1, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(210f, ElementSizeUnit.Pixels)));
-                }
-                return _mainMenuLabel1;
-            }
-        }
-
         private static Template _mainMenuGroup1;
         public static Template MainMenuGroup1
         {
@@ -446,7 +450,7 @@ namespace Delight
                     _mainMenuGroup1 = new Template(GroupTemplates.Group);
 #if UNITY_EDITOR
                     _mainMenuGroup1.Name = "MainMenuGroup1";
-                    _mainMenuGroup1.LineNumber = 8;
+                    _mainMenuGroup1.LineNumber = 6;
                     _mainMenuGroup1.LinePosition = 8;
 #endif
                     Delight.Group.SpacingProperty.SetDefault(_mainMenuGroup1, new ElementSize(10f, ElementSizeUnit.Pixels));
@@ -470,17 +474,9 @@ namespace Delight
                     _mainMenuButton1 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton1.Name = "MainMenuButton1";
-                    _mainMenuButton1.LineNumber = 9;
+                    _mainMenuButton1.LineNumber = 7;
                     _mainMenuButton1.LinePosition = 10;
 #endif
-                    Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton1, Assets.Sprites["MainMenuDemoButton"]);
-                    Delight.Button.BackgroundSpriteProperty.SetStateDefault("Pressed", _mainMenuButton1, Assets.Sprites["MainMenuDemoButtonPressed"]);
-                    Delight.Button.BackgroundColorProperty.SetDefault(_mainMenuButton1, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Highlighted", _mainMenuButton1, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Pressed", _mainMenuButton1, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.WidthProperty.SetDefault(_mainMenuButton1, new ElementSize(218f, ElementSizeUnit.Pixels));
-                    Delight.Button.HeightProperty.SetDefault(_mainMenuButton1, new ElementSize(117f, ElementSizeUnit.Pixels));
-                    Delight.Button.TextOffsetProperty.SetDefault(_mainMenuButton1, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(6f, ElementSizeUnit.Pixels)));
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton1, MainMenuButton1Label);
                 }
                 return _mainMenuButton1;
@@ -504,11 +500,6 @@ namespace Delight
                     _mainMenuButton1Label.LineNumber = 15;
                     _mainMenuButton1Label.LinePosition = 4;
 #endif
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuButton1Label, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuButton1Label, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuButton1Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Highlighted", _mainMenuButton1Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Pressed", _mainMenuButton1Label, new UnityEngine.Color(0.8f, 0.8f, 0.8f, 1f));
                     Delight.Label.TextProperty.SetDefault(_mainMenuButton1Label, "Play");
                 }
                 return _mainMenuButton1Label;
@@ -529,17 +520,9 @@ namespace Delight
                     _mainMenuButton2 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton2.Name = "MainMenuButton2";
-                    _mainMenuButton2.LineNumber = 10;
+                    _mainMenuButton2.LineNumber = 8;
                     _mainMenuButton2.LinePosition = 10;
 #endif
-                    Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton2, Assets.Sprites["MainMenuDemoButton"]);
-                    Delight.Button.BackgroundSpriteProperty.SetStateDefault("Pressed", _mainMenuButton2, Assets.Sprites["MainMenuDemoButtonPressed"]);
-                    Delight.Button.BackgroundColorProperty.SetDefault(_mainMenuButton2, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Highlighted", _mainMenuButton2, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Pressed", _mainMenuButton2, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.WidthProperty.SetDefault(_mainMenuButton2, new ElementSize(218f, ElementSizeUnit.Pixels));
-                    Delight.Button.HeightProperty.SetDefault(_mainMenuButton2, new ElementSize(117f, ElementSizeUnit.Pixels));
-                    Delight.Button.TextOffsetProperty.SetDefault(_mainMenuButton2, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(6f, ElementSizeUnit.Pixels)));
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton2, MainMenuButton2Label);
                 }
                 return _mainMenuButton2;
@@ -563,11 +546,6 @@ namespace Delight
                     _mainMenuButton2Label.LineNumber = 15;
                     _mainMenuButton2Label.LinePosition = 4;
 #endif
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuButton2Label, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuButton2Label, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuButton2Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Highlighted", _mainMenuButton2Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Pressed", _mainMenuButton2Label, new UnityEngine.Color(0.8f, 0.8f, 0.8f, 1f));
                     Delight.Label.TextProperty.SetDefault(_mainMenuButton2Label, "Options");
                 }
                 return _mainMenuButton2Label;
@@ -588,17 +566,9 @@ namespace Delight
                     _mainMenuButton3 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton3.Name = "MainMenuButton3";
-                    _mainMenuButton3.LineNumber = 11;
+                    _mainMenuButton3.LineNumber = 9;
                     _mainMenuButton3.LinePosition = 10;
 #endif
-                    Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton3, Assets.Sprites["MainMenuDemoButton"]);
-                    Delight.Button.BackgroundSpriteProperty.SetStateDefault("Pressed", _mainMenuButton3, Assets.Sprites["MainMenuDemoButtonPressed"]);
-                    Delight.Button.BackgroundColorProperty.SetDefault(_mainMenuButton3, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Highlighted", _mainMenuButton3, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Pressed", _mainMenuButton3, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.WidthProperty.SetDefault(_mainMenuButton3, new ElementSize(218f, ElementSizeUnit.Pixels));
-                    Delight.Button.HeightProperty.SetDefault(_mainMenuButton3, new ElementSize(117f, ElementSizeUnit.Pixels));
-                    Delight.Button.TextOffsetProperty.SetDefault(_mainMenuButton3, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(6f, ElementSizeUnit.Pixels)));
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton3, MainMenuButton3Label);
                 }
                 return _mainMenuButton3;
@@ -622,36 +592,31 @@ namespace Delight
                     _mainMenuButton3Label.LineNumber = 15;
                     _mainMenuButton3Label.LinePosition = 4;
 #endif
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuButton3Label, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuButton3Label, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuButton3Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Highlighted", _mainMenuButton3Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Pressed", _mainMenuButton3Label, new UnityEngine.Color(0.8f, 0.8f, 0.8f, 1f));
                     Delight.Label.TextProperty.SetDefault(_mainMenuButton3Label, "Quit");
                 }
                 return _mainMenuButton3Label;
             }
         }
 
-        private static Template _mainMenuPlayerSelectWindow;
-        public static Template MainMenuPlayerSelectWindow
+        private static Template _mainMenuPlayWindow;
+        public static Template MainMenuPlayWindow
         {
             get
             {
 #if UNITY_EDITOR
-                if (_mainMenuPlayerSelectWindow == null || _mainMenuPlayerSelectWindow.CurrentVersion != Template.Version)
+                if (_mainMenuPlayWindow == null || _mainMenuPlayWindow.CurrentVersion != Template.Version)
 #else
-                if (_mainMenuPlayerSelectWindow == null)
+                if (_mainMenuPlayWindow == null)
 #endif
                 {
-                    _mainMenuPlayerSelectWindow = new Template(RegionTemplates.Region);
+                    _mainMenuPlayWindow = new Template(RegionTemplates.Region);
 #if UNITY_EDITOR
-                    _mainMenuPlayerSelectWindow.Name = "MainMenuPlayerSelectWindow";
-                    _mainMenuPlayerSelectWindow.LineNumber = 17;
-                    _mainMenuPlayerSelectWindow.LinePosition = 6;
+                    _mainMenuPlayWindow.Name = "MainMenuPlayWindow";
+                    _mainMenuPlayWindow.LineNumber = 15;
+                    _mainMenuPlayWindow.LinePosition = 6;
 #endif
                 }
-                return _mainMenuPlayerSelectWindow;
+                return _mainMenuPlayWindow;
             }
         }
 
@@ -669,12 +634,62 @@ namespace Delight
                     _mainMenuGroup2 = new Template(GroupTemplates.Group);
 #if UNITY_EDITOR
                     _mainMenuGroup2.Name = "MainMenuGroup2";
-                    _mainMenuGroup2.LineNumber = 18;
+                    _mainMenuGroup2.LineNumber = 16;
                     _mainMenuGroup2.LinePosition = 8;
 #endif
                     Delight.Group.SpacingProperty.SetDefault(_mainMenuGroup2, new ElementSize(10f, ElementSizeUnit.Pixels));
                 }
                 return _mainMenuGroup2;
+            }
+        }
+
+        private static Template _mainMenuToggleGroup1;
+        public static Template MainMenuToggleGroup1
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuToggleGroup1 == null || _mainMenuToggleGroup1.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuToggleGroup1 == null)
+#endif
+                {
+                    _mainMenuToggleGroup1 = new Template(ToggleGroupTemplates.ToggleGroup);
+#if UNITY_EDITOR
+                    _mainMenuToggleGroup1.Name = "MainMenuToggleGroup1";
+                    _mainMenuToggleGroup1.LineNumber = 17;
+                    _mainMenuToggleGroup1.LinePosition = 10;
+#endif
+                    Delight.ToggleGroup.OrientationProperty.SetDefault(_mainMenuToggleGroup1, Delight.ElementOrientation.Horizontal);
+                    Delight.ToggleGroup.SpacingProperty.SetDefault(_mainMenuToggleGroup1, new ElementSize(4f, ElementSizeUnit.Pixels));
+                    Delight.ToggleGroup.ContentAlignmentProperty.SetDefault(_mainMenuToggleGroup1, Delight.ElementAlignment.Top);
+                }
+                return _mainMenuToggleGroup1;
+            }
+        }
+
+        private static Template _mainMenuLabel1;
+        public static Template MainMenuLabel1
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuLabel1 == null || _mainMenuLabel1.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuLabel1 == null)
+#endif
+                {
+                    _mainMenuLabel1 = new Template(LabelTemplates.Label);
+#if UNITY_EDITOR
+                    _mainMenuLabel1.Name = "MainMenuLabel1";
+                    _mainMenuLabel1.LineNumber = 18;
+                    _mainMenuLabel1.LinePosition = 12;
+#endif
+                    Delight.Label.TextProperty.SetDefault(_mainMenuLabel1, "Player Count:");
+                    Delight.Label.FontColorProperty.SetDefault(_mainMenuLabel1, new UnityEngine.Color(1f, 1f, 1f, 1f));
+                    Delight.Label.WidthProperty.SetDefault(_mainMenuLabel1, new ElementSize(100f, ElementSizeUnit.Pixels));
+                }
+                return _mainMenuLabel1;
             }
         }
 
@@ -693,16 +708,9 @@ namespace Delight
 #if UNITY_EDITOR
                     _mainMenuButton4.Name = "MainMenuButton4";
                     _mainMenuButton4.LineNumber = 19;
-                    _mainMenuButton4.LinePosition = 10;
+                    _mainMenuButton4.LinePosition = 12;
 #endif
-                    Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton4, Assets.Sprites["MainMenuDemoButton"]);
-                    Delight.Button.BackgroundSpriteProperty.SetStateDefault("Pressed", _mainMenuButton4, Assets.Sprites["MainMenuDemoButtonPressed"]);
-                    Delight.Button.BackgroundColorProperty.SetDefault(_mainMenuButton4, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Highlighted", _mainMenuButton4, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Pressed", _mainMenuButton4, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.WidthProperty.SetDefault(_mainMenuButton4, new ElementSize(218f, ElementSizeUnit.Pixels));
-                    Delight.Button.HeightProperty.SetDefault(_mainMenuButton4, new ElementSize(117f, ElementSizeUnit.Pixels));
-                    Delight.Button.TextOffsetProperty.SetDefault(_mainMenuButton4, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(6f, ElementSizeUnit.Pixels)));
+                    Delight.Button.ToggleValueProperty.SetDefault(_mainMenuButton4, true);
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton4, MainMenuButton4Label);
                 }
                 return _mainMenuButton4;
@@ -726,12 +734,7 @@ namespace Delight
                     _mainMenuButton4Label.LineNumber = 15;
                     _mainMenuButton4Label.LinePosition = 4;
 #endif
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuButton4Label, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuButton4Label, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuButton4Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Highlighted", _mainMenuButton4Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Pressed", _mainMenuButton4Label, new UnityEngine.Color(0.8f, 0.8f, 0.8f, 1f));
-                    Delight.Label.TextProperty.SetDefault(_mainMenuButton4Label, "Start");
+                    Delight.Label.TextProperty.SetDefault(_mainMenuButton4Label, "2");
                 }
                 return _mainMenuButton4Label;
             }
@@ -752,16 +755,8 @@ namespace Delight
 #if UNITY_EDITOR
                     _mainMenuButton5.Name = "MainMenuButton5";
                     _mainMenuButton5.LineNumber = 20;
-                    _mainMenuButton5.LinePosition = 10;
+                    _mainMenuButton5.LinePosition = 12;
 #endif
-                    Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton5, Assets.Sprites["MainMenuDemoButton"]);
-                    Delight.Button.BackgroundSpriteProperty.SetStateDefault("Pressed", _mainMenuButton5, Assets.Sprites["MainMenuDemoButtonPressed"]);
-                    Delight.Button.BackgroundColorProperty.SetDefault(_mainMenuButton5, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Highlighted", _mainMenuButton5, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Pressed", _mainMenuButton5, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.WidthProperty.SetDefault(_mainMenuButton5, new ElementSize(218f, ElementSizeUnit.Pixels));
-                    Delight.Button.HeightProperty.SetDefault(_mainMenuButton5, new ElementSize(117f, ElementSizeUnit.Pixels));
-                    Delight.Button.TextOffsetProperty.SetDefault(_mainMenuButton5, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(6f, ElementSizeUnit.Pixels)));
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton5, MainMenuButton5Label);
                 }
                 return _mainMenuButton5;
@@ -785,36 +780,9 @@ namespace Delight
                     _mainMenuButton5Label.LineNumber = 15;
                     _mainMenuButton5Label.LinePosition = 4;
 #endif
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuButton5Label, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuButton5Label, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuButton5Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Highlighted", _mainMenuButton5Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Pressed", _mainMenuButton5Label, new UnityEngine.Color(0.8f, 0.8f, 0.8f, 1f));
-                    Delight.Label.TextProperty.SetDefault(_mainMenuButton5Label, "Back");
+                    Delight.Label.TextProperty.SetDefault(_mainMenuButton5Label, "3");
                 }
                 return _mainMenuButton5Label;
-            }
-        }
-
-        private static Template _mainMenuOptionsWindow;
-        public static Template MainMenuOptionsWindow
-        {
-            get
-            {
-#if UNITY_EDITOR
-                if (_mainMenuOptionsWindow == null || _mainMenuOptionsWindow.CurrentVersion != Template.Version)
-#else
-                if (_mainMenuOptionsWindow == null)
-#endif
-                {
-                    _mainMenuOptionsWindow = new Template(RegionTemplates.Region);
-#if UNITY_EDITOR
-                    _mainMenuOptionsWindow.Name = "MainMenuOptionsWindow";
-                    _mainMenuOptionsWindow.LineNumber = 25;
-                    _mainMenuOptionsWindow.LinePosition = 6;
-#endif
-                }
-                return _mainMenuOptionsWindow;
             }
         }
 
@@ -832,17 +800,9 @@ namespace Delight
                     _mainMenuButton6 = new Template(ButtonTemplates.Button);
 #if UNITY_EDITOR
                     _mainMenuButton6.Name = "MainMenuButton6";
-                    _mainMenuButton6.LineNumber = 26;
-                    _mainMenuButton6.LinePosition = 8;
+                    _mainMenuButton6.LineNumber = 21;
+                    _mainMenuButton6.LinePosition = 12;
 #endif
-                    Delight.Button.BackgroundSpriteProperty.SetDefault(_mainMenuButton6, Assets.Sprites["MainMenuDemoButton"]);
-                    Delight.Button.BackgroundSpriteProperty.SetStateDefault("Pressed", _mainMenuButton6, Assets.Sprites["MainMenuDemoButtonPressed"]);
-                    Delight.Button.BackgroundColorProperty.SetDefault(_mainMenuButton6, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Highlighted", _mainMenuButton6, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.BackgroundColorProperty.SetStateDefault("Pressed", _mainMenuButton6, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Button.WidthProperty.SetDefault(_mainMenuButton6, new ElementSize(218f, ElementSizeUnit.Pixels));
-                    Delight.Button.HeightProperty.SetDefault(_mainMenuButton6, new ElementSize(117f, ElementSizeUnit.Pixels));
-                    Delight.Button.TextOffsetProperty.SetDefault(_mainMenuButton6, new ElementMargin(new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(0f, ElementSizeUnit.Pixels), new ElementSize(6f, ElementSizeUnit.Pixels)));
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton6, MainMenuButton6Label);
                 }
                 return _mainMenuButton6;
@@ -866,14 +826,169 @@ namespace Delight
                     _mainMenuButton6Label.LineNumber = 15;
                     _mainMenuButton6Label.LinePosition = 4;
 #endif
-                    Delight.Label.FontSizeProperty.SetDefault(_mainMenuButton6Label, 40);
-                    Delight.Label.FontProperty.SetDefault(_mainMenuButton6Label, Assets.Fonts["AveriaSansLibre-Bold SDF"]);
-                    Delight.Label.FontColorProperty.SetDefault(_mainMenuButton6Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Highlighted", _mainMenuButton6Label, new UnityEngine.Color(1f, 1f, 1f, 1f));
-                    Delight.Label.FontColorProperty.SetStateDefault("Pressed", _mainMenuButton6Label, new UnityEngine.Color(0.8f, 0.8f, 0.8f, 1f));
-                    Delight.Label.TextProperty.SetDefault(_mainMenuButton6Label, "Back");
+                    Delight.Label.TextProperty.SetDefault(_mainMenuButton6Label, "4");
                 }
                 return _mainMenuButton6Label;
+            }
+        }
+
+        private static Template _mainMenuButton7;
+        public static Template MainMenuButton7
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuButton7 == null || _mainMenuButton7.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuButton7 == null)
+#endif
+                {
+                    _mainMenuButton7 = new Template(ButtonTemplates.Button);
+#if UNITY_EDITOR
+                    _mainMenuButton7.Name = "MainMenuButton7";
+                    _mainMenuButton7.LineNumber = 23;
+                    _mainMenuButton7.LinePosition = 10;
+#endif
+                    Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton7, MainMenuButton7Label);
+                }
+                return _mainMenuButton7;
+            }
+        }
+
+        private static Template _mainMenuButton7Label;
+        public static Template MainMenuButton7Label
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuButton7Label == null || _mainMenuButton7Label.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuButton7Label == null)
+#endif
+                {
+                    _mainMenuButton7Label = new Template(ButtonTemplates.ButtonLabel);
+#if UNITY_EDITOR
+                    _mainMenuButton7Label.Name = "MainMenuButton7Label";
+                    _mainMenuButton7Label.LineNumber = 15;
+                    _mainMenuButton7Label.LinePosition = 4;
+#endif
+                    Delight.Label.TextProperty.SetDefault(_mainMenuButton7Label, "Start");
+                }
+                return _mainMenuButton7Label;
+            }
+        }
+
+        private static Template _mainMenuButton8;
+        public static Template MainMenuButton8
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuButton8 == null || _mainMenuButton8.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuButton8 == null)
+#endif
+                {
+                    _mainMenuButton8 = new Template(ButtonTemplates.Button);
+#if UNITY_EDITOR
+                    _mainMenuButton8.Name = "MainMenuButton8";
+                    _mainMenuButton8.LineNumber = 24;
+                    _mainMenuButton8.LinePosition = 10;
+#endif
+                    Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton8, MainMenuButton8Label);
+                }
+                return _mainMenuButton8;
+            }
+        }
+
+        private static Template _mainMenuButton8Label;
+        public static Template MainMenuButton8Label
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuButton8Label == null || _mainMenuButton8Label.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuButton8Label == null)
+#endif
+                {
+                    _mainMenuButton8Label = new Template(ButtonTemplates.ButtonLabel);
+#if UNITY_EDITOR
+                    _mainMenuButton8Label.Name = "MainMenuButton8Label";
+                    _mainMenuButton8Label.LineNumber = 15;
+                    _mainMenuButton8Label.LinePosition = 4;
+#endif
+                    Delight.Label.TextProperty.SetDefault(_mainMenuButton8Label, "Back");
+                }
+                return _mainMenuButton8Label;
+            }
+        }
+
+        private static Template _mainMenuOptionsWindow;
+        public static Template MainMenuOptionsWindow
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuOptionsWindow == null || _mainMenuOptionsWindow.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuOptionsWindow == null)
+#endif
+                {
+                    _mainMenuOptionsWindow = new Template(RegionTemplates.Region);
+#if UNITY_EDITOR
+                    _mainMenuOptionsWindow.Name = "MainMenuOptionsWindow";
+                    _mainMenuOptionsWindow.LineNumber = 29;
+                    _mainMenuOptionsWindow.LinePosition = 6;
+#endif
+                }
+                return _mainMenuOptionsWindow;
+            }
+        }
+
+        private static Template _mainMenuButton9;
+        public static Template MainMenuButton9
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuButton9 == null || _mainMenuButton9.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuButton9 == null)
+#endif
+                {
+                    _mainMenuButton9 = new Template(ButtonTemplates.Button);
+#if UNITY_EDITOR
+                    _mainMenuButton9.Name = "MainMenuButton9";
+                    _mainMenuButton9.LineNumber = 30;
+                    _mainMenuButton9.LinePosition = 8;
+#endif
+                    Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuButton9, MainMenuButton9Label);
+                }
+                return _mainMenuButton9;
+            }
+        }
+
+        private static Template _mainMenuButton9Label;
+        public static Template MainMenuButton9Label
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuButton9Label == null || _mainMenuButton9Label.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuButton9Label == null)
+#endif
+                {
+                    _mainMenuButton9Label = new Template(ButtonTemplates.ButtonLabel);
+#if UNITY_EDITOR
+                    _mainMenuButton9Label.Name = "MainMenuButton9Label";
+                    _mainMenuButton9Label.LineNumber = 15;
+                    _mainMenuButton9Label.LinePosition = 4;
+#endif
+                    Delight.Label.TextProperty.SetDefault(_mainMenuButton9Label, "Back");
+                }
+                return _mainMenuButton9Label;
             }
         }
 

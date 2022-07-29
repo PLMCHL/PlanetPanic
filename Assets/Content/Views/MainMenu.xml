@@ -3,27 +3,31 @@
 
     <!-- first view, our main menu buttons -->
     <Region Id="MainMenuWindow">
-      <Image Sprite="MainMenuDemoBg" Height="480" PreserveAspect="True" />
-      <Label Style="MainMenuDemoTitle" Text="Main Menu" Offset="0,0,0,210" />
       <Group Spacing="10" Offset="0,25,0,0">
-        <Button Style="StoneButton" Text="Play" Click="Play" />
-        <Button Style="StoneButton" Text="Options" Click="ShowOptions" />
-        <Button Style="StoneButton" Text="Quit" Click="Quit" />
+        <Button Text="Play" Click="Play" />
+        <Button Text="Options" Click="ShowOptions" />
+        <Button Text="Quit" Click="Quit" />
       </Group>
     </Region>
 
     <!-- Second view, Player select -->
-    <!-- TODO: add selection for: player count, turn count, player colors -->
-    <Region Id="PlayerSelectWindow" >
+    <!-- TODO: add selection for: turn count, player colors -->
+    <Region Id="PlayWindow" >
       <Group Spacing="10">
-        <Button Style="StoneButton" Text="Start" Click="StartGame" />
-        <Button Style="StoneButton" Text="Back" Click="NavigateToMainMenu" />
+        <ToggleGroup Orientation="Horizontal" Spacing="4" ContentAlignment="Top">
+          <Label Text="Player Count:" FontColor="White" Width="100" />
+          <Button Text="2" ToggleValue="True" Click="$ @PlayerCount = 2" />
+          <Button Text="3" Click="$ @PlayerCount = 3" />
+          <Button Text="4" Click="$ @PlayerCount = 4" />
+        </ToggleGroup>
+        <Button Text="Start" Click="StartGame" />
+        <Button Text="Back" Click="NavigateToMainMenu" />
       </Group>
     </Region>
 
     <!-- third view, Options select -->
     <Region Id="OptionsWindow" >
-      <Button Style="StoneButton" Text="Back" Click="NavigateToMainMenu" />
+      <Button Text="Back" Click="NavigateToMainMenu" />
     </Region>
 
   </ViewSwitcher>

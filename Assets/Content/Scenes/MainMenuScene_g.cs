@@ -114,18 +114,21 @@ namespace Delight
 #endif
                     Delight.MainMenu.SubmenuSwitcherTemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1SubmenuSwitcher);
                     Delight.MainMenu.MainMenuWindowTemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1MainMenuWindow);
-                    Delight.MainMenu.Image1TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Image1);
-                    Delight.MainMenu.Label1TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Label1);
                     Delight.MainMenu.Group1TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Group1);
                     Delight.MainMenu.Button1TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button1);
                     Delight.MainMenu.Button2TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button2);
                     Delight.MainMenu.Button3TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button3);
-                    Delight.MainMenu.PlayerSelectWindowTemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1PlayerSelectWindow);
+                    Delight.MainMenu.PlayWindowTemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1PlayWindow);
                     Delight.MainMenu.Group2TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Group2);
+                    Delight.MainMenu.ToggleGroup1TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1ToggleGroup1);
+                    Delight.MainMenu.Label1TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Label1);
                     Delight.MainMenu.Button4TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button4);
                     Delight.MainMenu.Button5TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button5);
-                    Delight.MainMenu.OptionsWindowTemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1OptionsWindow);
                     Delight.MainMenu.Button6TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button6);
+                    Delight.MainMenu.Button7TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button7);
+                    Delight.MainMenu.Button8TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button8);
+                    Delight.MainMenu.OptionsWindowTemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1OptionsWindow);
+                    Delight.MainMenu.Button9TemplateProperty.SetDefault(_mainMenuSceneMainMenu1, MainMenuSceneMainMenu1Button9);
                 }
                 return _mainMenuSceneMainMenu1;
             }
@@ -175,50 +178,6 @@ namespace Delight
             }
         }
 
-        private static Template _mainMenuSceneMainMenu1Image1;
-        public static Template MainMenuSceneMainMenu1Image1
-        {
-            get
-            {
-#if UNITY_EDITOR
-                if (_mainMenuSceneMainMenu1Image1 == null || _mainMenuSceneMainMenu1Image1.CurrentVersion != Template.Version)
-#else
-                if (_mainMenuSceneMainMenu1Image1 == null)
-#endif
-                {
-                    _mainMenuSceneMainMenu1Image1 = new Template(MainMenuTemplates.MainMenuImage1);
-#if UNITY_EDITOR
-                    _mainMenuSceneMainMenu1Image1.Name = "MainMenuSceneMainMenu1Image1";
-                    _mainMenuSceneMainMenu1Image1.LineNumber = 6;
-                    _mainMenuSceneMainMenu1Image1.LinePosition = 8;
-#endif
-                }
-                return _mainMenuSceneMainMenu1Image1;
-            }
-        }
-
-        private static Template _mainMenuSceneMainMenu1Label1;
-        public static Template MainMenuSceneMainMenu1Label1
-        {
-            get
-            {
-#if UNITY_EDITOR
-                if (_mainMenuSceneMainMenu1Label1 == null || _mainMenuSceneMainMenu1Label1.CurrentVersion != Template.Version)
-#else
-                if (_mainMenuSceneMainMenu1Label1 == null)
-#endif
-                {
-                    _mainMenuSceneMainMenu1Label1 = new Template(MainMenuTemplates.MainMenuLabel1);
-#if UNITY_EDITOR
-                    _mainMenuSceneMainMenu1Label1.Name = "MainMenuSceneMainMenu1Label1";
-                    _mainMenuSceneMainMenu1Label1.LineNumber = 7;
-                    _mainMenuSceneMainMenu1Label1.LinePosition = 8;
-#endif
-                }
-                return _mainMenuSceneMainMenu1Label1;
-            }
-        }
-
         private static Template _mainMenuSceneMainMenu1Group1;
         public static Template MainMenuSceneMainMenu1Group1
         {
@@ -233,7 +192,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Group1 = new Template(MainMenuTemplates.MainMenuGroup1);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Group1.Name = "MainMenuSceneMainMenu1Group1";
-                    _mainMenuSceneMainMenu1Group1.LineNumber = 8;
+                    _mainMenuSceneMainMenu1Group1.LineNumber = 6;
                     _mainMenuSceneMainMenu1Group1.LinePosition = 8;
 #endif
                 }
@@ -255,7 +214,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button1 = new Template(MainMenuTemplates.MainMenuButton1);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button1.Name = "MainMenuSceneMainMenu1Button1";
-                    _mainMenuSceneMainMenu1Button1.LineNumber = 9;
+                    _mainMenuSceneMainMenu1Button1.LineNumber = 7;
                     _mainMenuSceneMainMenu1Button1.LinePosition = 10;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button1, MainMenuSceneMainMenu1Button1Label);
@@ -300,7 +259,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button2 = new Template(MainMenuTemplates.MainMenuButton2);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button2.Name = "MainMenuSceneMainMenu1Button2";
-                    _mainMenuSceneMainMenu1Button2.LineNumber = 10;
+                    _mainMenuSceneMainMenu1Button2.LineNumber = 8;
                     _mainMenuSceneMainMenu1Button2.LinePosition = 10;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button2, MainMenuSceneMainMenu1Button2Label);
@@ -345,7 +304,7 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button3 = new Template(MainMenuTemplates.MainMenuButton3);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button3.Name = "MainMenuSceneMainMenu1Button3";
-                    _mainMenuSceneMainMenu1Button3.LineNumber = 11;
+                    _mainMenuSceneMainMenu1Button3.LineNumber = 9;
                     _mainMenuSceneMainMenu1Button3.LinePosition = 10;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button3, MainMenuSceneMainMenu1Button3Label);
@@ -376,25 +335,25 @@ namespace Delight
             }
         }
 
-        private static Template _mainMenuSceneMainMenu1PlayerSelectWindow;
-        public static Template MainMenuSceneMainMenu1PlayerSelectWindow
+        private static Template _mainMenuSceneMainMenu1PlayWindow;
+        public static Template MainMenuSceneMainMenu1PlayWindow
         {
             get
             {
 #if UNITY_EDITOR
-                if (_mainMenuSceneMainMenu1PlayerSelectWindow == null || _mainMenuSceneMainMenu1PlayerSelectWindow.CurrentVersion != Template.Version)
+                if (_mainMenuSceneMainMenu1PlayWindow == null || _mainMenuSceneMainMenu1PlayWindow.CurrentVersion != Template.Version)
 #else
-                if (_mainMenuSceneMainMenu1PlayerSelectWindow == null)
+                if (_mainMenuSceneMainMenu1PlayWindow == null)
 #endif
                 {
-                    _mainMenuSceneMainMenu1PlayerSelectWindow = new Template(MainMenuTemplates.MainMenuPlayerSelectWindow);
+                    _mainMenuSceneMainMenu1PlayWindow = new Template(MainMenuTemplates.MainMenuPlayWindow);
 #if UNITY_EDITOR
-                    _mainMenuSceneMainMenu1PlayerSelectWindow.Name = "MainMenuSceneMainMenu1PlayerSelectWindow";
-                    _mainMenuSceneMainMenu1PlayerSelectWindow.LineNumber = 17;
-                    _mainMenuSceneMainMenu1PlayerSelectWindow.LinePosition = 6;
+                    _mainMenuSceneMainMenu1PlayWindow.Name = "MainMenuSceneMainMenu1PlayWindow";
+                    _mainMenuSceneMainMenu1PlayWindow.LineNumber = 15;
+                    _mainMenuSceneMainMenu1PlayWindow.LinePosition = 6;
 #endif
                 }
-                return _mainMenuSceneMainMenu1PlayerSelectWindow;
+                return _mainMenuSceneMainMenu1PlayWindow;
             }
         }
 
@@ -412,11 +371,55 @@ namespace Delight
                     _mainMenuSceneMainMenu1Group2 = new Template(MainMenuTemplates.MainMenuGroup2);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Group2.Name = "MainMenuSceneMainMenu1Group2";
-                    _mainMenuSceneMainMenu1Group2.LineNumber = 18;
+                    _mainMenuSceneMainMenu1Group2.LineNumber = 16;
                     _mainMenuSceneMainMenu1Group2.LinePosition = 8;
 #endif
                 }
                 return _mainMenuSceneMainMenu1Group2;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1ToggleGroup1;
+        public static Template MainMenuSceneMainMenu1ToggleGroup1
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1ToggleGroup1 == null || _mainMenuSceneMainMenu1ToggleGroup1.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1ToggleGroup1 == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1ToggleGroup1 = new Template(MainMenuTemplates.MainMenuToggleGroup1);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1ToggleGroup1.Name = "MainMenuSceneMainMenu1ToggleGroup1";
+                    _mainMenuSceneMainMenu1ToggleGroup1.LineNumber = 17;
+                    _mainMenuSceneMainMenu1ToggleGroup1.LinePosition = 10;
+#endif
+                }
+                return _mainMenuSceneMainMenu1ToggleGroup1;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Label1;
+        public static Template MainMenuSceneMainMenu1Label1
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Label1 == null || _mainMenuSceneMainMenu1Label1.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Label1 == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Label1 = new Template(MainMenuTemplates.MainMenuLabel1);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Label1.Name = "MainMenuSceneMainMenu1Label1";
+                    _mainMenuSceneMainMenu1Label1.LineNumber = 18;
+                    _mainMenuSceneMainMenu1Label1.LinePosition = 12;
+#endif
+                }
+                return _mainMenuSceneMainMenu1Label1;
             }
         }
 
@@ -435,7 +438,7 @@ namespace Delight
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button4.Name = "MainMenuSceneMainMenu1Button4";
                     _mainMenuSceneMainMenu1Button4.LineNumber = 19;
-                    _mainMenuSceneMainMenu1Button4.LinePosition = 10;
+                    _mainMenuSceneMainMenu1Button4.LinePosition = 12;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button4, MainMenuSceneMainMenu1Button4Label);
                 }
@@ -480,7 +483,7 @@ namespace Delight
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button5.Name = "MainMenuSceneMainMenu1Button5";
                     _mainMenuSceneMainMenu1Button5.LineNumber = 20;
-                    _mainMenuSceneMainMenu1Button5.LinePosition = 10;
+                    _mainMenuSceneMainMenu1Button5.LinePosition = 12;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button5, MainMenuSceneMainMenu1Button5Label);
                 }
@@ -510,28 +513,6 @@ namespace Delight
             }
         }
 
-        private static Template _mainMenuSceneMainMenu1OptionsWindow;
-        public static Template MainMenuSceneMainMenu1OptionsWindow
-        {
-            get
-            {
-#if UNITY_EDITOR
-                if (_mainMenuSceneMainMenu1OptionsWindow == null || _mainMenuSceneMainMenu1OptionsWindow.CurrentVersion != Template.Version)
-#else
-                if (_mainMenuSceneMainMenu1OptionsWindow == null)
-#endif
-                {
-                    _mainMenuSceneMainMenu1OptionsWindow = new Template(MainMenuTemplates.MainMenuOptionsWindow);
-#if UNITY_EDITOR
-                    _mainMenuSceneMainMenu1OptionsWindow.Name = "MainMenuSceneMainMenu1OptionsWindow";
-                    _mainMenuSceneMainMenu1OptionsWindow.LineNumber = 25;
-                    _mainMenuSceneMainMenu1OptionsWindow.LinePosition = 6;
-#endif
-                }
-                return _mainMenuSceneMainMenu1OptionsWindow;
-            }
-        }
-
         private static Template _mainMenuSceneMainMenu1Button6;
         public static Template MainMenuSceneMainMenu1Button6
         {
@@ -546,8 +527,8 @@ namespace Delight
                     _mainMenuSceneMainMenu1Button6 = new Template(MainMenuTemplates.MainMenuButton6);
 #if UNITY_EDITOR
                     _mainMenuSceneMainMenu1Button6.Name = "MainMenuSceneMainMenu1Button6";
-                    _mainMenuSceneMainMenu1Button6.LineNumber = 26;
-                    _mainMenuSceneMainMenu1Button6.LinePosition = 8;
+                    _mainMenuSceneMainMenu1Button6.LineNumber = 21;
+                    _mainMenuSceneMainMenu1Button6.LinePosition = 12;
 #endif
                     Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button6, MainMenuSceneMainMenu1Button6Label);
                 }
@@ -574,6 +555,163 @@ namespace Delight
 #endif
                 }
                 return _mainMenuSceneMainMenu1Button6Label;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Button7;
+        public static Template MainMenuSceneMainMenu1Button7
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Button7 == null || _mainMenuSceneMainMenu1Button7.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Button7 == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Button7 = new Template(MainMenuTemplates.MainMenuButton7);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Button7.Name = "MainMenuSceneMainMenu1Button7";
+                    _mainMenuSceneMainMenu1Button7.LineNumber = 23;
+                    _mainMenuSceneMainMenu1Button7.LinePosition = 10;
+#endif
+                    Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button7, MainMenuSceneMainMenu1Button7Label);
+                }
+                return _mainMenuSceneMainMenu1Button7;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Button7Label;
+        public static Template MainMenuSceneMainMenu1Button7Label
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Button7Label == null || _mainMenuSceneMainMenu1Button7Label.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Button7Label == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Button7Label = new Template(MainMenuTemplates.MainMenuButton7Label);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Button7Label.Name = "MainMenuSceneMainMenu1Button7Label";
+                    _mainMenuSceneMainMenu1Button7Label.LineNumber = 15;
+                    _mainMenuSceneMainMenu1Button7Label.LinePosition = 4;
+#endif
+                }
+                return _mainMenuSceneMainMenu1Button7Label;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Button8;
+        public static Template MainMenuSceneMainMenu1Button8
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Button8 == null || _mainMenuSceneMainMenu1Button8.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Button8 == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Button8 = new Template(MainMenuTemplates.MainMenuButton8);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Button8.Name = "MainMenuSceneMainMenu1Button8";
+                    _mainMenuSceneMainMenu1Button8.LineNumber = 24;
+                    _mainMenuSceneMainMenu1Button8.LinePosition = 10;
+#endif
+                    Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button8, MainMenuSceneMainMenu1Button8Label);
+                }
+                return _mainMenuSceneMainMenu1Button8;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Button8Label;
+        public static Template MainMenuSceneMainMenu1Button8Label
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Button8Label == null || _mainMenuSceneMainMenu1Button8Label.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Button8Label == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Button8Label = new Template(MainMenuTemplates.MainMenuButton8Label);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Button8Label.Name = "MainMenuSceneMainMenu1Button8Label";
+                    _mainMenuSceneMainMenu1Button8Label.LineNumber = 15;
+                    _mainMenuSceneMainMenu1Button8Label.LinePosition = 4;
+#endif
+                }
+                return _mainMenuSceneMainMenu1Button8Label;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1OptionsWindow;
+        public static Template MainMenuSceneMainMenu1OptionsWindow
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1OptionsWindow == null || _mainMenuSceneMainMenu1OptionsWindow.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1OptionsWindow == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1OptionsWindow = new Template(MainMenuTemplates.MainMenuOptionsWindow);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1OptionsWindow.Name = "MainMenuSceneMainMenu1OptionsWindow";
+                    _mainMenuSceneMainMenu1OptionsWindow.LineNumber = 29;
+                    _mainMenuSceneMainMenu1OptionsWindow.LinePosition = 6;
+#endif
+                }
+                return _mainMenuSceneMainMenu1OptionsWindow;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Button9;
+        public static Template MainMenuSceneMainMenu1Button9
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Button9 == null || _mainMenuSceneMainMenu1Button9.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Button9 == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Button9 = new Template(MainMenuTemplates.MainMenuButton9);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Button9.Name = "MainMenuSceneMainMenu1Button9";
+                    _mainMenuSceneMainMenu1Button9.LineNumber = 30;
+                    _mainMenuSceneMainMenu1Button9.LinePosition = 8;
+#endif
+                    Delight.Button.LabelTemplateProperty.SetDefault(_mainMenuSceneMainMenu1Button9, MainMenuSceneMainMenu1Button9Label);
+                }
+                return _mainMenuSceneMainMenu1Button9;
+            }
+        }
+
+        private static Template _mainMenuSceneMainMenu1Button9Label;
+        public static Template MainMenuSceneMainMenu1Button9Label
+        {
+            get
+            {
+#if UNITY_EDITOR
+                if (_mainMenuSceneMainMenu1Button9Label == null || _mainMenuSceneMainMenu1Button9Label.CurrentVersion != Template.Version)
+#else
+                if (_mainMenuSceneMainMenu1Button9Label == null)
+#endif
+                {
+                    _mainMenuSceneMainMenu1Button9Label = new Template(MainMenuTemplates.MainMenuButton9Label);
+#if UNITY_EDITOR
+                    _mainMenuSceneMainMenu1Button9Label.Name = "MainMenuSceneMainMenu1Button9Label";
+                    _mainMenuSceneMainMenu1Button9Label.LineNumber = 15;
+                    _mainMenuSceneMainMenu1Button9Label.LinePosition = 4;
+#endif
+                }
+                return _mainMenuSceneMainMenu1Button9Label;
             }
         }
 

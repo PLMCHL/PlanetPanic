@@ -1,3 +1,4 @@
+using Assets.Content.Scripts.StaticContext;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -35,35 +36,12 @@ public class GameSessionManager : MonoBehaviour
     {
         if (state == State.WaitToStart)
         {
-            // Start game
-            var key2 = Input.GetKeyDown(KeyCode.Alpha2);
-            var key3 = Input.GetKeyDown(KeyCode.Alpha3);
-            var key4 = Input.GetKeyDown(KeyCode.Alpha4);
+            playerCount = GameSceneContext.PlayerCount;
+            InitializePlayers(playerCount);
 
-            if (key2 || key3 || key4)
-            {
-                GameInterfaceManager.Instance.HideAnnouncementPanel();
-
-                // TODO this transformation is pretty ugly
-                if (key2)
-                {
-                    playerCount = 2;
-                }
-                else if (key3)
-                {
-                    playerCount = 3;
-                }
-                else if (key4)
-                {
-                    playerCount = 4;
-                }
-
-                InitializePlayers(playerCount);
-
-                DiceRoller.Instance.StartRoll();
-                MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
-                state = State.Rolling;
-            }
+            DiceRoller.Instance.StartRoll();
+            MainCameraManager.Instance.ZoomToTarget(PlayerListManager.Instance.GetCurrentPlayer().transform.position);
+            state = State.Rolling;
         }
         else if (state == State.DirectionSelect)
         {

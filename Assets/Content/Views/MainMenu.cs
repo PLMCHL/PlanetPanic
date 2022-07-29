@@ -1,25 +1,22 @@
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-#endregion
+using Assets.Content.Scripts.StaticContext;
 
 namespace Delight
 {
     public partial class MainMenu
     {
+        int PlayerCount;
+
         public void StartGame()
         {
+            GameSceneContext.PlayerCount = PlayerCount;
             SceneManager.LoadScene("GameScene");
         }
 
         public void Play()
         {
-            SubmenuSwitcher.SwitchTo(PlayerSelectWindow);
+            SubmenuSwitcher.SwitchTo(PlayWindow);
         }
 
         public void ShowOptions()
