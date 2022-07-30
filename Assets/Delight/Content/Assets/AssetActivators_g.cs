@@ -15,13 +15,16 @@ namespace Delight
         static Assets()
         {
             ViewActivators = new Dictionary<string, Func<View, View, string, Template, bool, View>>();
-            ViewActivators.Add("MainMenu", (x, y, z, w, a) => new MainMenu(x, y, z, w, a));
+            ViewActivators.Add("MainMenuView", (x, y, z, w, a) => new MainMenuView(x, y, z, w, a));
             ViewActivators.Add("UIView", (x, y, z, w, a) => new UIView(x, y, z, w, a));
+            ViewActivators.Add("ViewSwitcher", (x, y, z, w, a) => new ViewSwitcher(x, y, z, w, a));
+            ViewActivators.Add("Region", (x, y, z, w, a) => new Region(x, y, z, w, a));
             ViewActivators.Add("Group", (x, y, z, w, a) => new Group(x, y, z, w, a));
             ViewActivators.Add("Button", (x, y, z, w, a) => new Button(x, y, z, w, a));
+            ViewActivators.Add("ToggleGroup", (x, y, z, w, a) => new ToggleGroup(x, y, z, w, a));
+            ViewActivators.Add("Label", (x, y, z, w, a) => new Label(x, y, z, w, a));
             ViewActivators.Add("SceneObjectView", (x, y, z, w, a) => new SceneObjectView(x, y, z, w, a));
             ViewActivators.Add("UIImageView", (x, y, z, w, a) => new UIImageView(x, y, z, w, a));
-            ViewActivators.Add("Label", (x, y, z, w, a) => new Label(x, y, z, w, a));
             ViewActivators.Add("CanvasRendererView", (x, y, z, w, a) => new CanvasRendererView(x, y, z, w, a));
             ViewActivators.Add("CheckBox", (x, y, z, w, a) => new CheckBox(x, y, z, w, a));
             ViewActivators.Add("Image", (x, y, z, w, a) => new Image(x, y, z, w, a));
@@ -40,7 +43,6 @@ namespace Delight
             ViewActivators.Add("GridSplitter", (x, y, z, w, a) => new GridSplitter(x, y, z, w, a));
             ViewActivators.Add("GridSplitterHandle", (x, y, z, w, a) => new GridSplitterHandle(x, y, z, w, a));
             ViewActivators.Add("InputField", (x, y, z, w, a) => new InputField(x, y, z, w, a));
-            ViewActivators.Add("Region", (x, y, z, w, a) => new Region(x, y, z, w, a));
             ViewActivators.Add("RectMask2D", (x, y, z, w, a) => new RectMask2D(x, y, z, w, a));
             ViewActivators.Add("LayoutRoot", (x, y, z, w, a) => new LayoutRoot(x, y, z, w, a));
             ViewActivators.Add("NavigationButton", (x, y, z, w, a) => new NavigationButton(x, y, z, w, a));
@@ -55,8 +57,6 @@ namespace Delight
             ViewActivators.Add("Tab", (x, y, z, w, a) => new Tab(x, y, z, w, a));
             ViewActivators.Add("TabHeader", (x, y, z, w, a) => new TabHeader(x, y, z, w, a));
             ViewActivators.Add("TabPanel", (x, y, z, w, a) => new TabPanel(x, y, z, w, a));
-            ViewActivators.Add("ViewSwitcher", (x, y, z, w, a) => new ViewSwitcher(x, y, z, w, a));
-            ViewActivators.Add("ToggleGroup", (x, y, z, w, a) => new ToggleGroup(x, y, z, w, a));
             ViewActivators.Add("ButtonsExample", (x, y, z, w, a) => new ButtonsExample(x, y, z, w, a));
             ViewActivators.Add("EmbeddedExpressionsExample", (x, y, z, w, a) => new EmbeddedExpressionsExample(x, y, z, w, a));
             ViewActivators.Add("GridExample", (x, y, z, w, a) => new GridExample(x, y, z, w, a));
@@ -76,13 +76,16 @@ namespace Delight
             ViewActivators.Add("MainMenuDemoScene", (x, y, z, w, a) => new MainMenuDemoScene(x, y, z, w, a));
 
             ViewTypes = new Dictionary<string, Type>();
-            ViewTypes.Add("MainMenu", typeof(MainMenu));
+            ViewTypes.Add("MainMenuView", typeof(MainMenuView));
             ViewTypes.Add("UIView", typeof(UIView));
+            ViewTypes.Add("ViewSwitcher", typeof(ViewSwitcher));
+            ViewTypes.Add("Region", typeof(Region));
             ViewTypes.Add("Group", typeof(Group));
             ViewTypes.Add("Button", typeof(Button));
+            ViewTypes.Add("ToggleGroup", typeof(ToggleGroup));
+            ViewTypes.Add("Label", typeof(Label));
             ViewTypes.Add("SceneObjectView", typeof(SceneObjectView));
             ViewTypes.Add("UIImageView", typeof(UIImageView));
-            ViewTypes.Add("Label", typeof(Label));
             ViewTypes.Add("CanvasRendererView", typeof(CanvasRendererView));
             ViewTypes.Add("CheckBox", typeof(CheckBox));
             ViewTypes.Add("Image", typeof(Image));
@@ -101,7 +104,6 @@ namespace Delight
             ViewTypes.Add("GridSplitter", typeof(GridSplitter));
             ViewTypes.Add("GridSplitterHandle", typeof(GridSplitterHandle));
             ViewTypes.Add("InputField", typeof(InputField));
-            ViewTypes.Add("Region", typeof(Region));
             ViewTypes.Add("RectMask2D", typeof(RectMask2D));
             ViewTypes.Add("LayoutRoot", typeof(LayoutRoot));
             ViewTypes.Add("NavigationButton", typeof(NavigationButton));
@@ -116,8 +118,6 @@ namespace Delight
             ViewTypes.Add("Tab", typeof(Tab));
             ViewTypes.Add("TabHeader", typeof(TabHeader));
             ViewTypes.Add("TabPanel", typeof(TabPanel));
-            ViewTypes.Add("ViewSwitcher", typeof(ViewSwitcher));
-            ViewTypes.Add("ToggleGroup", typeof(ToggleGroup));
             ViewTypes.Add("ButtonsExample", typeof(ButtonsExample));
             ViewTypes.Add("EmbeddedExpressionsExample", typeof(EmbeddedExpressionsExample));
             ViewTypes.Add("GridExample", typeof(GridExample));

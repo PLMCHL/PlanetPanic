@@ -1,0 +1,34 @@
+<MainMenuView xmlns="Delight" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Delight ../Delight.xsd">
+  <ViewSwitcher Id="SubmenuSwitcher">
+
+    <!-- first view, our main menu buttons -->
+    <Region Id="MainMenuWindow">
+      <Group Spacing="10" Offset="0,25,0,0">
+        <Button Text="Play" Click="Play" />
+        <Button Text="Options" Click="ShowOptions" />
+        <Button Text="Quit" Click="Quit" />
+      </Group>
+    </Region>
+
+    <!-- Second view, Player select -->
+    <!-- TODO: add selection for: turn count, player colors -->
+    <Region Id="PlayWindow" >
+      <Group Spacing="10">
+        <ToggleGroup Orientation="Horizontal" Spacing="4" ContentAlignment="Top">
+          <Label Text="Player Count:" FontColor="White" Width="100" />
+          <Button Text="2" ToggleValue="True" Click="$ @PlayerCount = 2" />
+          <Button Text="3" Click="$ @PlayerCount = 3" />
+          <Button Text="4" Click="$ @PlayerCount = 4" />
+        </ToggleGroup>
+        <Button Text="Start" Click="StartGame" />
+        <Button Text="Back" Click="NavigateToMainMenu" />
+      </Group>
+    </Region>
+
+    <!-- third view, Options select -->
+    <Region Id="OptionsWindow" >
+      <Button Text="Back" Click="NavigateToMainMenu" />
+    </Region>
+
+  </ViewSwitcher>
+</MainMenuView>

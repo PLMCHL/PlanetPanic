@@ -75,8 +75,8 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:element name="MainMenu" type="MainMenu" />
-  <xs:complexType name="MainMenu">
+  <xs:element name="MainMenuView" type="MainMenuView" />
+  <xs:complexType name="MainMenuView">
     <xs:sequence>
       <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded" />
     </xs:sequence>
@@ -140,11 +140,11 @@
     <xs:attribute name="LoadMode" type="Enum_LoadMode" />
     <xs:attribute name="State" type="xs:string" />
     <xs:attribute name="Id" type="xs:string" />
-    <xs:attribute name="Style" type="Style_MainMenu" />
+    <xs:attribute name="Style" type="Style_MainMenuView" />
     <xs:anyAttribute processContents="skip" />
   </xs:complexType>
 
-  <xs:simpleType name="Style_MainMenu">
+  <xs:simpleType name="Style_MainMenuView">
     <xs:restriction base="xs:string">
     </xs:restriction>
   </xs:simpleType>
